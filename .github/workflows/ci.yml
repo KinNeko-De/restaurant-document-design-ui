@@ -63,7 +63,7 @@ jobs:
             exit 1
           fi
       - name: Set version number
-        run: npm version ${{ steps.semantic_version.outputs.semantic_version }}
+        run: npm version ${{ steps.semantic_version.outputs.semantic_version }} --no-git-tag-version
       - name: Build
         run: npm run build
       - name: Create semantic versioning git tag
