@@ -20,9 +20,15 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "startsilent": "set \"BROWSER=none\" && react-scripts start",
+    "startchrome": "set \"BROWSER=none\" && start chrome http://localhost:3000 && react-scripts start",
+    "startfirefox": "set \"BROWSER=none\" && start firefox http://localhost:3000 && react-scripts start",
+    "startchromeincognito": "set \"BROWSER=none\" && start chrome http://localhost:3000 /incognito && react-scripts start",
+    "startfirefoxprivate": "set \"BROWSER=none\" && start firefox -private-window http://localhost:3000 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+
   },
   "eslintConfig": {
     "extends": [
