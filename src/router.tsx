@@ -1,11 +1,13 @@
 
 import { createBrowserRouter } from "react-router-dom";
-import Templates from "./design_document/templates";
+import Templates from "./design-document/templates";
+import PageNotFound from "./pageNotFound";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Templates/>
+    element: <Templates/>,
+    ErrorBoundary: PageNotFound
   }
 ]);
 
