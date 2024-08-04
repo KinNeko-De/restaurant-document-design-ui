@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
@@ -33,9 +33,9 @@ const formatDate2 = (date: Date): string => {
   if (diffInHours < 24) {
     return `Updated ${Math.floor(diffInHours)} hours ago`;
   } else if (diffInYears >= 1) {
-    return `Updated at ${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`;
+    return `Updated on ${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`;
   } else {
-    return `Updated at ${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}`;
+    return `Updated on ${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}`;
   }
 };
 
