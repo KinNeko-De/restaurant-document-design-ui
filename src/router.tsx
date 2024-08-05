@@ -8,7 +8,6 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Templates/>,
-    loader: () => import("./design-document/templates"),
     ErrorBoundary: PageNotFound
   }
 ]);
