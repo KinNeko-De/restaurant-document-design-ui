@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
@@ -7,7 +7,13 @@ import CardActions from '@mui/material/CardActions';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import StarIcon from '@mui/icons-material/Star';
+import CircularProgress from '@mui/material/CircularProgress';
 import styled from '@emotion/styled';
+
+enum TemplateLanguage {
+  LuaLaTex = 0,
+  Word = 1
+}
 
 interface Template {
   name: string;
@@ -19,10 +25,6 @@ interface Template {
   status: 'Draft' | 'Active';
 }
 
-enum TemplateLanguage {
-  LuaLaTex = 0,
-  Word = 1
-}
 const StatusCircle = styled.span<{ status: 'Draft' | 'Active' }>`
   display: inline-flex;
   align-items: center;
@@ -52,7 +54,6 @@ const formatDate2 = (date: Date): string => {
   }
 };
 
-
 // FavoriteButton component (implementation details omitted)
 const FavoriteButton: React.FC = () => (
   <IconButton>
@@ -71,13 +72,37 @@ const getLanguageColor = (value: TemplateLanguage): string => {
   }
 };
 
-const Templates: React.FC = () => {
-  const templates: Template[] = [
+const fetchTemplates = async (): Promise<Template[]> => {
+  await new Promise(resolve => setTimeout(resolve, 2300));
+  return [
     { name: 'Template 1', description: 'This is the first template.', language: TemplateLanguage.LuaLaTex, favourite: false, lastModified: new Date('2024-08-03T19:00:00'), tags: ['tag 1', 'tag 2'], status: 'Active' },
     { name: 'Template 2', description: 'This is the second template.', language: TemplateLanguage.Word, favourite: false, lastModified: new Date('2023-10-02T14:30:00'), status: 'Draft' },
     { name: 'Template 3', description: 'This is the second template.', language: TemplateLanguage.LuaLaTex, favourite: false, lastModified: new Date('2023-10-03T16:45:00'), tags: ['tag 3'], status: 'Draft' },
     { name: 'Template 4', description: 'This is the second template.', language: TemplateLanguage.LuaLaTex, favourite: false, lastModified: new Date('2023-07-04T18:00:00'), status: 'Draft' },
   ];
+};
+
+const loadTemplates = async (setTemplates: React.Dispatch<React.SetStateAction<Template[]>>, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+  const fetchedTemplates = await fetchTemplates();
+  setTemplates(fetchedTemplates);
+  setLoading(false);
+};
+
+const Templates: React.FC = () => {
+  const [loading, setLoading] = useState(true);
+  const [templates, setTemplates] = useState<Template[]>([]);
+
+  useEffect(() => {
+    loadTemplates(setTemplates, setLoading);
+  }, []);
+
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Grid container rowSpacing={'1rem'} columnSpacing={{ xs: '1rem' }} sx={{ m: '0.5rem' }}>
