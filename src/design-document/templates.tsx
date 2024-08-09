@@ -98,7 +98,7 @@ const Templates: React.FC = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh" data-testid="template-loading">
         <CircularProgress />
       </Box>
     );
@@ -108,7 +108,7 @@ const Templates: React.FC = () => {
     <Grid container rowSpacing={'1rem'} columnSpacing={{ xs: '1rem' }} sx={{ m: '0.5rem' }}>
       {templates.map((template) => (
         <Grid xs={12} sm={6} md={4} key={template.name}>
-          <Card sx={{ height: '100%' }}>
+          <Card sx={{ height: '100%' }} data-testid="template-loaded">
             <Box display="flex" flexDirection="column" height="100%">
               <CardContent>
                 <Box display="flex" alignItems="center">
