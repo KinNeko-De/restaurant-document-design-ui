@@ -1,7 +1,7 @@
 on:
   push:
 env:
-  MAJOR_MINOR_PATCH: 0.3.0
+  MAJOR_MINOR_PATCH: 0.3.1
 
 name: restaurant-document-design-ui-ci
 
@@ -68,6 +68,8 @@ jobs:
         run: npm version ${{ steps.semantic_version.outputs.semantic_version }} --no-git-tag-version
       - name: Build
         run: npm run build
+      - name: Test
+        run: npm run test
       - name: Create semantic versioning git tag
         uses: actions/github-script@v7
         with:
