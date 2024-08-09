@@ -69,7 +69,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: Test
-        run: npm run test
+        run: npm run ci-test-linux
       - name: Create semantic versioning git tag
         uses: actions/github-script@v7
         with:
