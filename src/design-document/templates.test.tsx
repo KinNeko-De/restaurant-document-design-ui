@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
-import { Template, TemplateGateway, TemplateLanguage } from './domain';
+import { Template, TemplateLanguage } from './domain';
 import Templates from './templates';
 import { TEST_IDS } from './testIds';
 
