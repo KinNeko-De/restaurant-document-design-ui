@@ -9,21 +9,9 @@ import IconButton from '@mui/material/IconButton';
 import StarIcon from '@mui/icons-material/Star';
 import CircularProgress from '@mui/material/CircularProgress';
 import styled from '@emotion/styled';
-
-enum TemplateLanguage {
-  LuaLaTex = 0,
-  Word = 1
-}
-
-interface Template {
-  name: string;
-  description: string;
-  language: TemplateLanguage;
-  favourite: boolean;
-  lastModified: Date;
-  tags?: string[]
-  status: 'Draft' | 'Active';
-}
+import { Template, TemplateLanguage } from './domain';
+import { fetchTemplates } from './gateway';
+import { TEST_IDS } from './testIds';
 
 const StatusCircle = styled.span<{ status: 'Draft' | 'Active' }>`
   display: inline-flex;
@@ -72,16 +60,6 @@ const getLanguageColor = (value: TemplateLanguage): string => {
   }
 };
 
-const fetchTemplates = async (): Promise<Template[]> => {
-  await new Promise(resolve => setTimeout(resolve, 2300));
-  return [
-    { name: 'Template 1', description: 'This is the first template.', language: TemplateLanguage.LuaLaTex, favourite: false, lastModified: new Date('2024-08-03T19:00:00'), tags: ['tag 1', 'tag 2'], status: 'Active' },
-    { name: 'Template 2', description: 'This is the second template.', language: TemplateLanguage.Word, favourite: false, lastModified: new Date('2023-10-02T14:30:00'), status: 'Draft' },
-    { name: 'Template 3', description: 'This is the second template.', language: TemplateLanguage.LuaLaTex, favourite: false, lastModified: new Date('2023-10-03T16:45:00'), tags: ['tag 3'], status: 'Draft' },
-    { name: 'Template 4', description: 'This is the second template.', language: TemplateLanguage.LuaLaTex, favourite: false, lastModified: new Date('2023-07-04T18:00:00'), status: 'Draft' },
-  ];
-};
-
 const loadTemplates = async (setTemplates: React.Dispatch<React.SetStateAction<Template[]>>, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
   const fetchedTemplates = await fetchTemplates();
   setTemplates(fetchedTemplates);
@@ -98,7 +76,7 @@ const Templates: React.FC = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="100vh" data-testid="template-loading">
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh" data-testid={TEST_IDS.TEMPLATE_LOADING}>
         <CircularProgress />
       </Box>
     );
@@ -108,7 +86,7 @@ const Templates: React.FC = () => {
     <Grid container rowSpacing={'1rem'} columnSpacing={{ xs: '1rem' }} sx={{ m: '0.5rem' }}>
       {templates.map((template) => (
         <Grid xs={12} sm={6} md={4} key={template.name}>
-          <Card sx={{ height: '100%' }} data-testid="template-loaded">
+          <Card sx={{ height: '100%' }} data-testid={TEST_IDS.TEMPLATE_LOADED}>
             <Box display="flex" flexDirection="column" height="100%">
               <CardContent>
                 <Box display="flex" alignItems="center">
@@ -174,3 +152,4 @@ const Templates: React.FC = () => {
 };
 
 export default Templates;
+export { fetchTemplates };
