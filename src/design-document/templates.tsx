@@ -9,8 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import StarIcon from '@mui/icons-material/Star';
 import CircularProgress from '@mui/material/CircularProgress';
 import styled from '@emotion/styled';
-import { Template, TemplateLanguage } from './domain';
-import { fetchTemplates } from './gateway';
+import { Template, TemplateLanguage, TemplateGateway } from './domain';
 import { TEST_IDS } from './testIds';
 
 const StatusCircle = styled.span<{ status: 'Draft' | 'Active' }>`
@@ -60,19 +59,19 @@ const getLanguageColor = (value: TemplateLanguage): string => {
   }
 };
 
-const loadTemplates = async (setTemplates: React.Dispatch<React.SetStateAction<Template[]>>, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
-  const fetchedTemplates = await fetchTemplates();
-  setTemplates(fetchedTemplates);
-  setLoading(false);
-};
-
-const Templates: React.FC = () => {
+const Templates: React.FC<TemplateGateway> = ({ fetchTemplates }) => {
   const [loading, setLoading] = useState(true);
   const [templates, setTemplates] = useState<Template[]>([]);
 
   useEffect(() => {
-    loadTemplates(setTemplates, setLoading);
-  }, []);
+    const loadTemplates = async () => {
+      const data = await fetchTemplates();
+      setTemplates(data);
+      setLoading(false);
+    };
+
+    loadTemplates();
+  }, [fetchTemplates]);
 
   if (loading) {
     return (
@@ -152,4 +151,3 @@ const Templates: React.FC = () => {
 };
 
 export default Templates;
-export { fetchTemplates };
