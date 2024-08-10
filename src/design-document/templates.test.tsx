@@ -40,22 +40,21 @@ describe('Templates', () => {
   });
 });
 
-const mockGateway: TemplateGateway = {
-  fetchTemplates: jest.fn() as jest.MockedFunction<TemplateGateway['fetchTemplates']>,
-  fetchTemplate: jest.fn() as jest.MockedFunction<TemplateGateway['fetchTemplate']>,
+const mockGateway = {
+  fetchTemplates: jest.fn(),
+  fetchTemplate: jest.fn()
 };
 
 const Sut: React.FC = () => {
   return (
     <Templates 
-      fetchTemplates={mockGateway.fetchTemplates} 
-      fetchTemplate={mockGateway.fetchTemplate} 
+      gateway={mockGateway}
     />
   );
 };
 
 function setupFetchTemplates(templates: Template[]) {
-  (mockGateway.fetchTemplates as jest.Mock).mockImplementationOnce(() => {
+  mockGateway.fetchTemplates.mockImplementationOnce(() => {
     return templates;
   });
 }

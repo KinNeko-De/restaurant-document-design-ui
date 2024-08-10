@@ -59,19 +59,19 @@ const getLanguageColor = (value: TemplateLanguage): string => {
   }
 };
 
-const Templates: React.FC<TemplateGateway> = ({ fetchTemplates }) => {
+const Templates: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
   const [loading, setLoading] = useState(true);
   const [templates, setTemplates] = useState<Template[]>([]);
 
   useEffect(() => {
     const loadTemplates = async () => {
-      const data = await fetchTemplates();
+      const data = await gateway.fetchTemplates();
       setTemplates(data);
       setLoading(false);
     };
 
     loadTemplates();
-  }, [fetchTemplates]);
+  }, [gateway]);
 
   if (loading) {
     return (
