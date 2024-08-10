@@ -1,12 +1,23 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
 import Templates from './templates';
 import { TemplateLanguage } from './domain';
-import { fetchTemplates } from './gateway';
 import '@testing-library/jest-dom'
 import { TEST_IDS } from './testIds';
 
-jest.mock('./gateway', () => ({ fetchTemplates: jest.fn() }));
+const mockGateway = {
+  fetchTemplates: jest.fn(),
+  fetchTemplate: jest.fn(),
+};
+
+const Sut: React.FC = () => {
+  return (
+    <Templates 
+      fetchTemplates={mockGateway.fetchTemplates} 
+      fetchTemplate={mockGateway.fetchTemplate} 
+    />
+  );
+};
 
 describe('Templates', () => {
   beforeEach(() => {
@@ -14,7 +25,7 @@ describe('Templates', () => {
   });
 
   test('loading animation is shown while loading', async () => {
-    (fetchTemplates as jest.Mock).mockImplementationOnce(() => {
+    mockGateway.fetchTemplates.mockImplementationOnce(() => {
       return new Promise((resolve) => {
         setTimeout(() => {
           resolve([]);
@@ -22,7 +33,7 @@ describe('Templates', () => {
       });
     });
 
-    render(<Templates />);
+    render(<Sut/>);
 
     expect(screen.getByTestId(TEST_IDS.TEMPLATE_LOADING)).toBeInTheDocument();
   });
@@ -34,13 +45,13 @@ describe('Templates', () => {
       { name: 'Template 3', description: 'This is the second template.', language: TemplateLanguage.LuaLaTex, favourite: false, lastModified: new Date('2023-10-03T16:45:00'), tags: ['tag 3'], status: 'Draft' },
       { name: 'Template 4', description: 'This is the second template.', language: TemplateLanguage.LuaLaTex, favourite: false, lastModified: new Date('2023-07-04T18:00:00'), status: 'Draft' },
     ];
-    (fetchTemplates as jest.Mock).mockResolvedValueOnce(mockTemplates);
+    mockGateway.fetchTemplates.mockResolvedValueOnce(mockTemplates);
 
-    render(<Templates />);
+    render(<Sut/>);
 
-    await waitFor(() => {
-      const templates = screen.getAllByTestId(TEST_IDS.TEMPLATE_LOADED);
-      expect(templates).toHaveLength(4);
-    }, { timeout: 3000 });
+    await waitForElementToBeRemoved(() => screen.queryByTestId(TEST_IDS.TEMPLATE_LOADING));
+
+    const templates = screen.getAllByTestId(TEST_IDS.TEMPLATE_LOADED);
+    expect(templates).toHaveLength(4);
   });
 });

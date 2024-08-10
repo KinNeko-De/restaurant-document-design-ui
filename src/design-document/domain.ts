@@ -12,3 +12,8 @@ export enum TemplateLanguage {
   LuaLaTex = 0,
   Word = 1
 }
+
+export interface TemplateGateway {
+  fetchTemplates: () => Promise<Template[]>;
+  fetchTemplate: () => Promise<Template>;
+}
