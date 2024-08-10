@@ -1,7 +1,7 @@
 on:
   push:
 env:
-  MAJOR_MINOR_PATCH: 0.4.1
+  MAJOR_MINOR_PATCH: 0.4.2
 
 name: restaurant-document-design-ui-ci
 
