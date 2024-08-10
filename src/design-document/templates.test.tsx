@@ -18,7 +18,7 @@ describe('Templates', () => {
       });
     });
 
-    render(<Sut/>);
+    render(<Sut />);
 
     expect(screen.getByTestId(TEST_IDS.TEMPLATE_LOADING)).toBeInTheDocument();
   });
@@ -32,7 +32,7 @@ describe('Templates', () => {
     ];
     setupFetchTemplates(mockTemplates);
 
-    render(<Sut/>);
+    render(<Sut />);
 
     await waitForElementToBeRemoved(() => screen.queryByTestId(TEST_IDS.TEMPLATE_LOADING));
     const templates = screen.getAllByTestId(TEST_IDS.TEMPLATE_LOADED);
@@ -47,9 +47,7 @@ const mockGateway = {
 
 const Sut: React.FC = () => {
   return (
-    <Templates 
-      gateway={mockGateway}
-    />
+    <Templates gateway={mockGateway} />
   );
 };
 

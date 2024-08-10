@@ -10,6 +10,7 @@ import StarIcon from '@mui/icons-material/Star';
 import CircularProgress from '@mui/material/CircularProgress';
 import styled from '@emotion/styled';
 import { Template, TemplateLanguage, TemplateGateway } from './domain';
+import { formatlastModified } from '../format-date/lastModified';
 import { TEST_IDS } from './testIds';
 
 const StatusCircle = styled.span<{ status: 'Draft' | 'Active' }>`
@@ -24,22 +25,6 @@ const StatusCircle = styled.span<{ status: 'Draft' | 'Active' }>`
   font-size: 0.75rem;
   font-weight: bold;
 `;
-
-const formatDate2 = (date: Date): string => {
-  const now = new Date();
-  const diffInMs = now.getTime() - date.getTime();
-  const diffInHours = diffInMs / (1000 * 60 * 60);
-  const diffInDays = diffInHours / 24;
-  const diffInYears = diffInDays / 365;
-
-  if (diffInHours < 24) {
-    return `Updated ${Math.floor(diffInHours)} hours ago`;
-  } else if (diffInYears >= 1) {
-    return `Updated on ${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`;
-  } else {
-    return `Updated on ${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}`;
-  }
-};
 
 // FavoriteButton component (implementation details omitted)
 const FavoriteButton: React.FC = () => (
@@ -136,7 +121,7 @@ const Templates: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
                       </Typography>
                     </Box>
                     <Typography variant="body2" color="text.secondary">
-                      {formatDate2(template.lastModified)}
+                      {formatlastModified(template.lastModified)}
                     </Typography>
                   </Box>
                   <FavoriteButton />
