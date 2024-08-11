@@ -45,18 +45,14 @@ export const formatTimeDifference = (lastModifiedAt: Date): string => {
   const lastModifiedYear = lastModifiedAt.getFullYear();
   const lastModifiedMonth = lastModifiedAt.getMonth();
   const lastModifiedDate = lastModifiedAt.getDate();
-  const diffInYears = nowYear - lastModifiedYear;
 
+  const diffInYears = nowYear - lastModifiedYear;
   const diffInMonths = diffInYears * 12 + (nowMonth - lastModifiedMonth);
 
-  if (diffInMonths < 1) {
-    if (nowDate >= lastModifiedDate) {
+  if (diffInMonths <= 1) {
+    const daysInLastMonth = new Date(nowYear, nowMonth, 0).getDate();
+    if ((daysInLastMonth - lastModifiedDate + nowDate) <= daysInLastMonth) {
       return `${Math.floor(diffInMs / oneDay)} days ago`;
-    } else {
-      const daysInLastMonth = new Date(nowYear, nowMonth, 0).getDate();
-      if ((nowDate + daysInLastMonth - lastModifiedDate) < daysInLastMonth) {
-        return `${Math.floor(diffInMs / oneDay)} days ago`;
-      }
     }
   }
   if (diffInMonths < 2) { return 'last month'; }
@@ -64,7 +60,6 @@ export const formatTimeDifference = (lastModifiedAt: Date): string => {
   if (diffInYears < 2) { return 'last year'; }
   return `${diffInYears} years ago`;
 };
-
 
 export const formatLastModified = (lastModifiedAt: Date): string => {
     /*
