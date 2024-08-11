@@ -34,7 +34,8 @@ ${new Date(2022, 2, 1, 0, 0, 0, 0)} | ${new Date(2022, 3, 30, 23, 59, 59, 999)} 
 ${new Date(2022, 0, 1, 0, 0, 0, 0)} | ${new Date(2022, 1, 28, 23, 59, 59, 999)} | ${'last month'} | ${'months monthNowWith28Days: Modified more than a month but less than two months, upper boundary'}
 ${new Date(2020, 0, 1, 0, 0, 0, 0)} | ${new Date(2020, 1, 29, 23, 59, 59, 999)} | ${'last month'} | ${'months monthNowWith29Days: Modified more than a month but less than two months, upper boundary'}
 ${new Date(2022, 11, 15, 0, 0, 0, 0)} | ${new Date(2023, 0, 15, 23, 59, 59, 999)} | ${'last month'} | ${'months, overlappingYear: Modified exactly one month ago, lower boundary'}
-${new Date(2022, 11, 15, 0, 0, 0, 0)} | ${new Date(2023, 1, 14, 23, 59, 59, 999)} | ${'last month'} | ${'months, overlappingYear WithNow30Days: Modified more than a month but less than two months, upper boundary'}
+${new Date(2022, 11, 15, 0, 0, 0, 0)} | ${new Date(2023, 1, 14, 23, 59, 59, 999)} | ${'last month'} | ${'months, overlappingYear WithNow28Days: Modified more than a month but less than two months, upper boundary'}
+${new Date(2019, 11, 15, 0, 0, 0, 0)} | ${new Date(2020, 1, 14, 23, 59, 59, 999)} | ${'last month'} | ${'months, overlappingYear WithNow29Days: Modified more than a month but less than two months, upper boundary'}
 ${new Date(2022, 10, 15, 0, 0, 0, 0)} | ${new Date(2023, 0, 14, 23, 59, 59, 999)} | ${'last month'} | ${'months, overlappingYear WithNow31Days: Modified more than a month but less than two months, upper boundary'}
 ${new Date(2022, 0, 1, 0, 0, 0, 0)} | ${new Date(2022, 2, 1, 0, 0, 0, 0)} | ${'2 months ago'} | ${'months: Modified exactly 2 months ago, lower boundary'}
 ${new Date(2022, 0, 1, 0, 0, 0, 0)} | ${new Date(2022, 11, 31, 23, 59, 59, 999)} | ${'11 months ago'} | ${'months: Modified more than 2 months but less than a year ago, upper boundary'}
