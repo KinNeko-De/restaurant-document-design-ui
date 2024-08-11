@@ -1,7 +1,7 @@
 on:
   push:
 env:
-  MAJOR_MINOR_PATCH: 0.4.4
+  MAJOR_MINOR_PATCH: 0.4.5
 
 name: restaurant-document-design-ui-ci
 
@@ -85,3 +85,8 @@ jobs:
               ref: "refs/tags/v${{ steps.semantic_version.outputs.semantic_version }}",
               sha: context.sha
             })
+      - name: Delete Git Tags With my action
+        uses: KinNeko-De/cleanup-outdated-tag-action@v0.1.4
+        if: github.ref == 'refs/heads/main'
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
