@@ -173,9 +173,7 @@ describe('formatTimeDifference', () => {
   });
 
   test('days: Modified exactly one day ago, lower boundary', () => {
-    const expectedDifference = 1;
-    const expectedUnit = 'day';
-    const expectedMessage = `${expectedDifference} ${expectedUnit} ago`;
+    const expectedMessage = `yesterday`;
     const modifiedMoreThanASecondButLessThanAHour = new Date(2022, 0, 1, 0, 0, 0, 0);
     const now = new Date(2022, 0, 2, 0, 0, 0, 0);
     jest.setSystemTime(now);
@@ -184,9 +182,7 @@ describe('formatTimeDifference', () => {
   });
 
   test('days: Modified more than a day but less than two days, upper boundary', () => {
-    const expectedDifference = 1;
-    const expectedUnit = 'day';
-    const expectedMessage = `${expectedDifference} ${expectedUnit} ago`;
+    const expectedMessage = `yesterday`;
     const modifiedMoreThanASecondButLessThanAHour = new Date(2022, 0, 1, 0, 0, 0, 0);
     const now = new Date(2022, 0, 2, 23, 59, 59, 999);
     jest.setSystemTime(now);
