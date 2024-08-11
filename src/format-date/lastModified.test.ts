@@ -1,41 +1,174 @@
 import { formatlastModified } from './lastModified';
 // import type { LocalesArgument } from 'intl';
 
+describe('formatTimeDifference', () => {
+  
+  beforeAll(() => {
+    jest.useFakeTimers('modern' as unknown as FakeTimersConfig);
+  });
 
-describe('formatDate2', () => {
+  afterEach(() => {
+    jest.clearAllTimers();
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+  
   /*
-  let originalToLocaleString: jest.SpyInstance;
+  let mockToLocaleString: jest.SpyInstance<string, [locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions | undefined], any>;
 
   beforeAll(() => {
-    // Mock the toLocaleString method to always use en-US locale
-    originalToLocaleString = jest.spyOn(Date.prototype, 'toLocaleString').mockImplementation(function (this: Date, _locales?: LocalesArgument, options?: Intl.DateTimeFormatOptions): string {
-      return Date.prototype.toLocaleString.call(this, 'en-US', options);
+    mockToLocaleString = jest.spyOn(Date.prototype, 'toLocaleString').mockImplementation(function (this: Date, _locales?: LocalesArgument, options?: Intl.DateTimeFormatOptions): string {
+      return Date.prototype.toLocaleString.call(this, 'de-DE', options);
     });
   });
 
   afterAll(() => {
-    // Restore the original toLocaleString method
-    originalToLocaleString.mockRestore();
+    mockToLocaleString.mockRestore();
   });
   */
 
+  test('milliseconds: Modified less than a second ago, upper boundary', () => {
+    const expectedMessage = 'less than a second ago';
+    const modifiedLessThanASecondAgo = new Date(2022, 0, 1, 0, 0, 0, 800);
+    const now = new Date(2022, 0, 1, 0, 0, 0, 900);
+    jest.setSystemTime(now);
 
-  test('returns "Updated X hours ago" for dates within the last 24 hours', () => {
-    const now = new Date();
-    const oneHourAgo = new Date(now.getTime() - 1 * 60 * 60 * 1000); // 1 hour ago
-    expect(formatlastModified(oneHourAgo)).toBe('Updated 1 hours ago');
+    expect(formatlastModified(modifiedLessThanASecondAgo)).toBe(expectedMessage);
   });
 
-  test('returns "Updated on Month Day, Year" for dates more than a year ago', () => {
-    const moreThanAYearAgo = new Date('2022-01-01T00:00:00');
-    expect(formatlastModified(moreThanAYearAgo)).toBe('Updated on January 1, 2022');
+  test('seconds: Modified exactly one second ago, lower boundary', () => {
+    const expectedDifference = 1;
+    const expectedUnit = 'second';
+    const expectedMessage = `${expectedDifference} ${expectedUnit} ago`;
+    const modifiedMoreThanASecondButLessThanAHour = new Date(2022, 0, 1, 0, 0, 0, 0);
+    const now = new Date(2022, 0, 1, 0, 0, 1, 0);
+    
+    jest.setSystemTime(now);
+
+    expect(formatlastModified(modifiedMoreThanASecondButLessThanAHour)).toBe(expectedMessage);
   });
 
-  test('returns "Updated on Month Day" for dates within the last year but more than 24 hours ago', () => {
-    const now = new Date();
-    const twoDaysAgo = new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000); // 2 days ago
-    const expectedMonth = twoDaysAgo.toLocaleString('default', { month: 'long' });
-    const expectedDay = twoDaysAgo.getDate();
-    expect(formatlastModified(twoDaysAgo)).toBe(`Updated on ${expectedMonth} ${expectedDay}`);
+  test('seconds: Modified more than a second but less than two second, upper boundary', () => {
+    const expectedDifference = 1;
+    const expectedUnit = 'second';
+    const expectedMessage = `${expectedDifference} ${expectedUnit} ago`;
+    const modifiedMoreThanASecondButLessThanAHour = new Date(2022, 0, 1, 0, 0, 0, 0);
+    const now = new Date(2022, 0, 1, 0, 0, 1, 999);
+    
+    jest.setSystemTime(now);
+
+    expect(formatlastModified(modifiedMoreThanASecondButLessThanAHour)).toBe(expectedMessage);
+  });
+
+  test('seconds: Modified exactly 2 seconds ago, lower boundary', () => {
+    const expectedDifference = 2;
+    const expectedUnit = 'seconds';
+    const expectedMessage = `${expectedDifference} ${expectedUnit} ago`;
+    const modifiedMoreThanASecondButLessThanAHour = new Date(2022, 0, 1, 0, 0, 0, 0);
+    const now = new Date(2022, 0, 1, 0, 0, 2, 0);
+    jest.setSystemTime(now);
+
+    expect(formatlastModified(modifiedMoreThanASecondButLessThanAHour)).toBe(expectedMessage);
+  });
+
+  test('seconds: Modified more than 2 seconds but less than one minute ago, upper boundary', () => {
+    const expectedDifference = 59;
+    const expectedUnit = 'seconds';
+    const expectedMessage = `${expectedDifference} ${expectedUnit} ago`;
+    const modifiedMoreThanASecondButLessThanAHour = new Date(2022, 0, 1, 0, 0, 0, 0);
+    const now = new Date(2022, 0, 1, 0, 0, 59, 999);
+    jest.setSystemTime(now);
+
+    expect(formatlastModified(modifiedMoreThanASecondButLessThanAHour)).toBe(expectedMessage);
+  });
+
+  test('minutes: Modified exactly one minute ago, lower boundary', () => {
+    const expectedDifference = 1;
+    const expectedUnit = 'minute';
+    const expectedMessage = `${expectedDifference} ${expectedUnit} ago`;
+    const modifiedMoreThanASecondButLessThanAHour = new Date(2022, 0, 1, 0, 0, 0, 0);
+    const now = new Date(2022, 0, 1, 0, 1, 0, 0);
+    jest.setSystemTime(now);
+
+    expect(formatlastModified(modifiedMoreThanASecondButLessThanAHour)).toBe(expectedMessage);
+  });
+
+  test('minutes: Modified more than a minute but less than two minutes, upper boundary', () => {
+    const expectedDifference = 1;
+    const expectedUnit = 'minute';
+    const expectedMessage = `${expectedDifference} ${expectedUnit} ago`;
+    const modifiedMoreThanASecondButLessThanAHour = new Date(2022, 0, 1, 0, 0, 0, 0);
+    const now = new Date(2022, 0, 1, 0, 1, 59, 999);
+    jest.setSystemTime(now);
+
+    expect(formatlastModified(modifiedMoreThanASecondButLessThanAHour)).toBe(expectedMessage);
+  });
+
+  test('minutes: Modified exactly 2 minutes ago, lower boundary', () => {
+    const expectedDifference = 2;
+    const expectedUnit = 'minutes';
+    const expectedMessage = `${expectedDifference} ${expectedUnit} ago`;
+    const modifiedMoreThanASecondButLessThanAHour = new Date(2022, 0, 1, 0, 0, 0, 0);
+    const now = new Date(2022, 0, 1, 0, 2, 0, 0);
+    jest.setSystemTime(now);
+
+    expect(formatlastModified(modifiedMoreThanASecondButLessThanAHour)).toBe(expectedMessage);
+  });
+
+  test('minutes: Modified more than 2 minutes but less than one hour ago, upper boundary', () => {
+    const expectedDifference = 59;
+    const expectedUnit = 'minutes';
+    const expectedMessage = `${expectedDifference} ${expectedUnit} ago`;
+    const modifiedMoreThanASecondButLessThanAHour = new Date(2022, 0, 1, 0, 0, 0, 0);
+    const now = new Date(2022, 0, 1, 0, 59, 59, 999);
+    jest.setSystemTime(now);
+
+    expect(formatlastModified(modifiedMoreThanASecondButLessThanAHour)).toBe(expectedMessage);
+  });
+
+  test('hours: Modified exactly one hour ago, lower boundary', () => {
+    const expectedDifference = 1;
+    const expectedUnit = 'hour';
+    const expectedMessage = `${expectedDifference} ${expectedUnit} ago`;
+    const modifiedMoreThanASecondButLessThanAHour = new Date(2022, 0, 1, 0, 0, 0, 0);
+    const now = new Date(2022, 0, 1, 1, 0, 0, 0);
+    jest.setSystemTime(now);
+
+    expect(formatlastModified(modifiedMoreThanASecondButLessThanAHour)).toBe(expectedMessage);
+  });
+
+  test('hours: Modified more than a hour but less than two hours, upper boundary', () => {
+    const expectedDifference = 1;
+    const expectedUnit = 'hour';
+    const expectedMessage = `${expectedDifference} ${expectedUnit} ago`;
+    const modifiedMoreThanASecondButLessThanAHour = new Date(2022, 0, 1, 0, 0, 0, 0);
+    const now = new Date(2022, 0, 1, 1, 59, 59, 999);
+    jest.setSystemTime(now);
+
+    expect(formatlastModified(modifiedMoreThanASecondButLessThanAHour)).toBe(expectedMessage);
+  });
+
+  test('hours: Modified exactly 2 hours ago, lower boundary', () => {
+    const expectedDifference = 2;
+    const expectedUnit = 'hours';
+    const expectedMessage = `${expectedDifference} ${expectedUnit} ago`;
+    const modifiedMoreThanASecondButLessThanAHour = new Date(2022, 0, 1, 0, 0, 0, 0);
+    const now = new Date(2022, 0, 1, 2, 0, 0, 0);
+    jest.setSystemTime(now);
+
+    expect(formatlastModified(modifiedMoreThanASecondButLessThanAHour)).toBe(expectedMessage);
+  });
+
+  test('hours: Modified more than 2 hours but less than one day ago, upper boundary', () => {
+    const expectedDifference = 23;
+    const expectedUnit = 'hours';
+    const expectedMessage = `${expectedDifference} ${expectedUnit} ago`;
+    const modifiedMoreThanASecondButLessThanAHour = new Date(2022, 0, 1, 0, 0, 0, 0);
+    const now = new Date(2022, 0, 1, 23, 59, 59, 999);
+    jest.setSystemTime(now);
+
+    expect(formatlastModified(modifiedMoreThanASecondButLessThanAHour)).toBe(expectedMessage);
   });
 });
