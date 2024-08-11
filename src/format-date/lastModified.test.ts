@@ -1,4 +1,4 @@
-import { formatTimeDifference } from './timeDifference';
+import { formatTimeDifference } from './lastModified';
 // import type { LocalesArgument } from 'intl';
 
 

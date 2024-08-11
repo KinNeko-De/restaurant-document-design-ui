@@ -10,7 +10,7 @@ import StarIcon from '@mui/icons-material/Star';
 import CircularProgress from '@mui/material/CircularProgress';
 import styled from '@emotion/styled';
 import { Template, TemplateLanguage, TemplateGateway } from './domain';
-import { formatTimeDifference } from '../format-date/timeDifference';
+import { formatTimeDifference } from '../format-date/lastModified';
 import { TEST_IDS } from './testIds';
 
 const StatusCircle = styled.span<{ status: 'Draft' | 'Active' }>`
