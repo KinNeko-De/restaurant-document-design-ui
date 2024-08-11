@@ -7,26 +7,26 @@ const twoHours = 7200000;
 const oneDay = 86400000;
 const twoDays = 172800000;
 
-  /**
-   * This function will return a string that represents the time difference between the last modified date and the current date.
-   * The string will be in the format of:
-   * - "less than a second ago" if the difference is less than 1 second
-   * - "1 second ago" if the difference is greater or equal 1 second but less than 2 seconds
-   * - "X seconds ago" if the difference is greater or equal 2 seconds but less than 1 minute
-   * - "1 minute ago" if the difference is greater or equal 1 minute but less than 2 minutes
-   * - "X minutes ago" if the difference is greater or equal 2 minutes but less than 1 hour
-   * - "1 hour ago" if the difference is greater or equal 1 hour but less than 2 hours
-   * - "X hours ago" if the difference is greater or equal 2 hours but less than 1 day
-   * - "yesterday" if the difference is greater or equal 1 day but less than 2 days
-   * - "X days ago" if the difference is more greater or equal 2 day but less than 1 month
-   * - "last month" if the difference is greater or equal 1 month but less than 2 months
-   * - "X months ago" if the difference is greater or equal 2 months but less than 1 year
-   * - "last year" if the difference is greater or equal 1 year but less than 2 years
-   * - "X years ago" if the difference is greater or equal 2 years
-   */
+/**
+ * This function returns a string that represents the time difference between the last modified date and the current date.
+ * The string will be in the format of:
+ * - "less than a second ago" if the difference is less than 1 second
+ * - "1 second ago" if the difference is greater or equal to 1 second but less than 2 seconds
+ * - "X seconds ago" if the difference is greater or equal to 2 seconds but less than 1 minute
+ * - "1 minute ago" if the difference is greater or equal to 1 minute but less than 2 minutes
+ * - "X minutes ago" if the difference is greater or equal to 2 minutes but less than 1 hour
+ * - "1 hour ago" if the difference is greater or equal to 1 hour but less than 2 hours
+ * - "X hours ago" if the difference is greater or equal to 2 hours but less than 1 day
+ * - "yesterday" if the difference is greater or equal to 1 day but less than 2 days
+ * - "X days ago" if the difference is greater or equal to 2 days but less than 1 month
+ * - "last month" if the difference is greater or equal to 1 month but less than 2 months
+ * - "X months ago" if the difference is greater or equal to 2 months but less than 1 year
+ * - "last year" if the difference is greater or equal to 1 year but less than 2 years
+ * - "X years ago" if the difference is greater or equal to 2 years
+ */
 export const formatTimeDifference = (lastModifiedAt: Date): string => {
   const now = new Date();
-  const nowTime = now.getTime()
+  const nowTime = now.getTime();
   const modifiedTime = lastModifiedAt.getTime()
   const diffInMs = nowTime - modifiedTime;
   const nowYear = now.getFullYear()
