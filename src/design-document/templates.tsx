@@ -10,7 +10,7 @@ import StarIcon from '@mui/icons-material/Star';
 import CircularProgress from '@mui/material/CircularProgress';
 import styled from '@emotion/styled';
 import { Template, TemplateLanguage, TemplateGateway } from './domain';
-import { formatlastModified } from '../format-date/lastModified';
+import { formatTimeDifference } from '../format-date/timeDifference';
 import { TEST_IDS } from './testIds';
 
 const StatusCircle = styled.span<{ status: 'Draft' | 'Active' }>`
@@ -121,7 +121,7 @@ const Templates: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
                       </Typography>
                     </Box>
                     <Typography variant="body2" color="text.secondary">
-                      {formatlastModified(template.lastModified)}
+                      {formatTimeDifference(template.lastModified)}
                     </Typography>
                   </Box>
                   <FavoriteButton />
