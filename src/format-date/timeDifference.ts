@@ -14,7 +14,7 @@ export const formatTimeDifference = (lastModifiedAt: Date): string => {
   const diffInMs = nowTime - modifiedTime;
   const diffInYears = now.getFullYear() - lastModifiedAt.getFullYear();
   if(diffInYears >= 1 && diffInYears < 2) { return `1 year ago`; }
-  if(diffInYears > 0) { return `${Math.floor(diffInYears)} years ago`; }
+  if(diffInYears >= 2) { return `${Math.floor(diffInYears)} years ago`; }
   const diffInMonths = now.getMonth() - lastModifiedAt.getMonth();
   if(diffInMonths >= 2) { return `${Math.floor(diffInMonths)} months ago`; }
   if(diffInMonths >= 1 && diffInMonths < 2) {
