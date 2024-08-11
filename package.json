@@ -32,9 +32,9 @@
     "startchromeincognito": "set \"BROWSER=none\" && start chrome http://localhost:3000 /incognito && react-scripts start",
     "startfirefoxprivate": "set \"BROWSER=none\" && start firefox -private-window http://localhost:3000 && react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --coverage",
+    "test": "react-scripts test",
     "ci-test-linux": "CI=true react-scripts test --coverage",
-    "ci-test-windows": "set CI=true&&react-scripts test --coverage",
+    "ci-test-windows": "set CI=true&&react-scripts test --coverage --verbose",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
