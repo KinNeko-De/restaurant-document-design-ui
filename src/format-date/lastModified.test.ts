@@ -26,6 +26,7 @@ ${new Date(2022, 1, 1, 0, 0, 0, 0)} | ${new Date(2022, 1, 27, 23, 59, 59, 999)} 
 ${new Date(2020, 1, 1, 0, 0, 0, 0)} | ${new Date(2020, 1, 28, 23, 59, 59, 999)} | ${'27 days ago'} | ${'days: monthWith29Days,  Modified more than 2 days but less than one month ago, upper boundary'}
 ${new Date(2020, 3, 15, 0, 0, 0, 0)} | ${new Date(2020, 4, 14, 23, 59, 59, 999)} | ${'29 days ago'} | ${'days, overlappingMonthes with 30 days Modified more than 2 days but less than one month ago, upper boundary'}
 ${new Date(2020, 4, 15, 0, 0, 0, 0)} | ${new Date(2020, 5, 14, 23, 59, 59, 999)} | ${'30 days ago'} | ${'days, overlappingMonthes with 31 days Modified more than 2 days but less than one month ago, upper boundary'}
+${new Date(2022, 0, 1, 0, 0, 0, 0)} | ${new Date(2022, 1, 1, 0, 0, 0, 0)} | ${'last month'} | ${'days: Modified exactly one month ago, lower boundary'}
 `('formatTimeDifference', ({ modified, now, expectedMessage, testcase }) => {
 
   beforeAll(() => {
