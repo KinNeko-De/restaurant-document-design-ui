@@ -51,8 +51,8 @@ export const formatTimeDifference = (lastModifiedAt: Date): string => {
 
   if (diffInMonths < 1) { return `${Math.floor(diffInMs / oneDay)} days ago`; }
   if (diffInMonths === 1) {
-    const daysInLastMonth = new Date(nowYear, nowMonth, 0).getDate();
-    if ((daysInLastMonth - lastModifiedDate + nowDate) <= daysInLastMonth) {
+    const daysInNowMonth = new Date(nowYear, nowMonth + 1, 0).getDate();
+    if ((daysInNowMonth - lastModifiedDate + nowDate) < daysInNowMonth) {
       return `${Math.floor(diffInMs / oneDay)} days ago`;
     }
   }
