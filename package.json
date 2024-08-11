@@ -9,7 +9,7 @@
     "@mui/material": "^5.16.7",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.2",
-    "@types/jest": "^29.5.12",
+    "@types/intl": "^1.2.2",
     "@types/node": "^16.18.105",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.8",
+    "@types/jest": "^29.5.12",
     "react-scripts": "^5.0.1"
   },
   "scripts": {
@@ -31,9 +32,9 @@
     "startchromeincognito": "set \"BROWSER=none\" && start chrome http://localhost:3000 /incognito && react-scripts start",
     "startfirefoxprivate": "set \"BROWSER=none\" && start firefox -private-window http://localhost:3000 && react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --coverage",
+    "test": "react-scripts test",
     "ci-test-linux": "CI=true react-scripts test --coverage",
-    "ci-test-windows": "set CI=true&&react-scripts test --coverage",
+    "ci-test-windows": "set CI=true&&react-scripts test --coverage --verbose",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

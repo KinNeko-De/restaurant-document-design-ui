@@ -7,10 +7,7 @@ import { templateGateway } from "./design-document/gateway";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Templates
-      fetchTemplates={templateGateway.fetchTemplates}
-      fetchTemplate={templateGateway.fetchTemplate}
-    />,
+    element: <Templates gateway={templateGateway} />,
     ErrorBoundary: PageNotFound
   }
 ]);

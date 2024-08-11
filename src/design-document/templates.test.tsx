@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
-import { Template, TemplateGateway, TemplateLanguage } from './domain';
+import { Template, TemplateLanguage } from './domain';
 import Templates from './templates';
 import { TEST_IDS } from './testIds';
 
@@ -18,7 +18,7 @@ describe('Templates', () => {
       });
     });
 
-    render(<Sut/>);
+    render(<Sut />);
 
     expect(screen.getByTestId(TEST_IDS.TEMPLATE_LOADING)).toBeInTheDocument();
   });
@@ -32,7 +32,7 @@ describe('Templates', () => {
     ];
     setupFetchTemplates(mockTemplates);
 
-    render(<Sut/>);
+    render(<Sut />);
 
     await waitForElementToBeRemoved(() => screen.queryByTestId(TEST_IDS.TEMPLATE_LOADING));
     const templates = screen.getAllByTestId(TEST_IDS.TEMPLATE_LOADED);
@@ -40,22 +40,19 @@ describe('Templates', () => {
   });
 });
 
-const mockGateway: TemplateGateway = {
-  fetchTemplates: jest.fn() as jest.MockedFunction<TemplateGateway['fetchTemplates']>,
-  fetchTemplate: jest.fn() as jest.MockedFunction<TemplateGateway['fetchTemplate']>,
+const mockGateway = {
+  fetchTemplates: jest.fn(),
+  fetchTemplate: jest.fn()
 };
 
 const Sut: React.FC = () => {
   return (
-    <Templates 
-      fetchTemplates={mockGateway.fetchTemplates} 
-      fetchTemplate={mockGateway.fetchTemplate} 
-    />
+    <Templates gateway={mockGateway} />
   );
 };
 
 function setupFetchTemplates(templates: Template[]) {
-  (mockGateway.fetchTemplates as jest.Mock).mockImplementationOnce(() => {
+  mockGateway.fetchTemplates.mockImplementationOnce(() => {
     return templates;
   });
 }
