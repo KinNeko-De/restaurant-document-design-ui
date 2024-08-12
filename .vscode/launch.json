@@ -9,48 +9,78 @@
       "request": "launch",
       "name": "Start using Default browser",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run-script", "start"],
-      "skipFiles": ["<node_internals>/**"]
+      "runtimeArgs": [
+        "run-script",
+        "start"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Start using Chrome",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run-script", "startchrome"],
-      "skipFiles": ["<node_internals>/**"]
+      "runtimeArgs": [
+        "run-script",
+        "startchrome"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Start using Firefox",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run-script", "startfirefox"],
-      "skipFiles": ["<node_internals>/**"]
+      "runtimeArgs": [
+        "run-script",
+        "startfirefox"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Start using Chrome Incognito",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run-script", "startchromeincognito"],
-      "skipFiles": ["<node_internals>/**"]
+      "runtimeArgs": [
+        "run-script",
+        "startchromeincognito"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Start using Firefox private",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run-script", "startfirefoxprivate"],
-      "skipFiles": ["<node_internals>/**"]
+      "runtimeArgs": [
+        "run-script",
+        "startfirefoxprivate"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Start only app",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run-script", "startsilent"],
-      "skipFiles": ["<node_internals>/**"]
+      "runtimeArgs": [
+        "run-script",
+        "startsilent"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
     },
     {
       "type": "chrome",
@@ -71,11 +101,39 @@
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/react-scripts",
-      "args": ["test", "--runInBand", "--no-cache", "--watchAll=false"],
+      "args": [
+        "test",
+        "--runInBand",
+        "--no-cache",
+        "--watchAll=false"
+      ],
       "cwd": "${workspaceRoot}",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "env": { "CI": "true" },
+      "env": {
+        "CI": "true"
+      }
+    },
+    {
+      "type": "node",
+      "name": "vscode-jest-tests.v2.restaurant-document-design-ui",
+      "request": "launch",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/react-scripts",
+      "args": [
+        "test",
+        "--runInBand",
+        "--watchAll=false",
+        "--testNamePattern",
+        "${jest.testNamePattern}",
+        "--runTestsByPath",
+        "${jest.testFile}"
+      ],
+      "cwd": "c:\\Git\\github\\kinneko-de\\restaurant-document-design-ui",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "CI": "true"
+      }
     }
   ]
 }
