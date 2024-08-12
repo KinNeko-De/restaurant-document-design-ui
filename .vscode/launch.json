@@ -128,7 +128,7 @@
         "--runTestsByPath",
         "${jest.testFile}"
       ],
-      "cwd": "c:\\Git\\github\\kinneko-de\\restaurant-document-design-ui",
+      "cwd": "${workspaceRoot}",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "env": {
