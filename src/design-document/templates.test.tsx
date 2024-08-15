@@ -51,7 +51,18 @@ describe('Templates', () => {
     await waitForElementToBeRemoved(() => screen.queryByTestId(TEST_IDS.TEMPLATE_LOADING));
     const templates = screen.getAllByTestId(TEST_IDS.TEMPLATE_LOADED);
     expect(templates).toHaveLength(2);
-  });
+
+    templates.forEach((template, index) => {
+      expect(template).toHaveTextContent(mockTemplates[index].name);
+      expect(template).toHaveTextContent(mockTemplates[index].description);
+      expect(template).toHaveTextContent(TemplateLanguage[mockTemplates[index].language]); // TODO make this assert more stable
+      // expect(template).toHaveTextContent(expectedValues[index].LastModified); // TODO add assert for last modified as soon as the text is implemented
+      mockTemplates[index].tags?.forEach((tag) => {
+        expect(template).toHaveTextContent(tag);
+      });
+      expect(template).toHaveTextContent(mockTemplates[index].status);
+    });
+  }, 100000);
 });
 
 const mockGateway = {
