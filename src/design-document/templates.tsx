@@ -8,10 +8,13 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import StarIcon from '@mui/icons-material/Star';
 import CircularProgress from '@mui/material/CircularProgress';
+import Button from '@mui/material/Button';
 import styled from '@emotion/styled';
 import { Template, TemplateLanguage, TemplateGateway } from './domain';
 import { formatTimeDifference } from '../format-date/lastModified';
 import { TEST_IDS } from './testIds';
+import HappySnowman from './happy_snowman.svg'; // Import the SVG file
+
 
 const StatusCircle = styled.span<{ status: 'Draft' | 'Active' }>`
   display: inline-flex;
@@ -40,7 +43,9 @@ const getLanguageColor = (value: TemplateLanguage): string => {
     case TemplateLanguage.Word:
       return 'blue';
     default:
-      return 'gray';
+      // This should never happen if all enum values are handled
+      const exhaustiveCheck: never = value;
+      throw new Error(`Unhandled case: ${exhaustiveCheck}`);
   }
 };
 
@@ -62,6 +67,25 @@ const Templates: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="100vh" data-testid={TEST_IDS.TEMPLATE_LOADING}>
         <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (templates.length === 0) {
+    return (
+      <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" height="100vh" p={2}  data-testid={TEST_IDS.TEMPLATE_LOADED_NO_TEMPLATES}>
+        <Box display="flex" justifyContent="center" alignItems="center" mb={2}>
+          <img src={HappySnowman} alt="Happy Snowman" style={{ maxWidth: '100%', height: 'auto' }} />
+        </Box>
+        <Typography variant="h6" color="textSecondary" align="center">
+          Feeling a bit chilly? ❄️
+        </Typography>
+        <Typography variant="h6" color="textSecondary" align="center">
+          Let's warm things up with a brand
+        </Typography>
+        <Button variant="contained" color="primary" style={{ marginTop: '1rem' }} data-testid={TEST_IDS.TEMPLATE_NEW}>
+          New Template
+        </Button>
       </Box>
     );
   }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import { fireEvent, render, screen, waitForElementToBeRemoved } from '@testing-library/react';
 import { Template, TemplateLanguage } from './domain';
 import Templates from './templates';
 import { TEST_IDS } from './testIds';
@@ -14,7 +14,7 @@ describe('Templates', () => {
       return new Promise((resolve) => {
         setTimeout(() => {
           resolve([]);
-        }, 1000);
+        }, 100);
       });
     });
 
@@ -23,12 +23,26 @@ describe('Templates', () => {
     expect(screen.getByTestId(TEST_IDS.TEMPLATE_LOADING)).toBeInTheDocument();
   });
 
+  test('no templates are available', async () => {
+    const mockTemplates: Template[] = [];
+    setupFetchTemplates(mockTemplates);
+
+    render(<Sut />);
+
+    await waitForElementToBeRemoved(() => screen.queryByTestId(TEST_IDS.TEMPLATE_LOADING));
+    const noTemplate = screen.getAllByTestId(TEST_IDS.TEMPLATE_LOADED_NO_TEMPLATES);
+    expect(noTemplate).toHaveLength(1);
+    const button = screen.getByTestId(TEST_IDS.TEMPLATE_NEW);
+    expect(button).toBeInTheDocument();
+    expect(button).not.toBeDisabled();
+    fireEvent.click(button);
+    // TODO - Add assert for clicking the button
+  });
+
   test('templates are displayed after loaded', async () => {
     const mockTemplates: Template[] = [
       { name: 'Template 1', description: 'This is the first template.', language: TemplateLanguage.LuaLaTex, favourite: false, lastModified: new Date('2024-08-03T19:00:00'), tags: ['tag 1', 'tag 2'], status: 'Active' },
       { name: 'Template 2', description: 'This is the second template.', language: TemplateLanguage.Word, favourite: false, lastModified: new Date('2023-10-02T14:30:00'), status: 'Draft' },
-      { name: 'Template 3', description: 'This is the second template.', language: TemplateLanguage.LuaLaTex, favourite: false, lastModified: new Date('2023-10-03T16:45:00'), tags: ['tag 3'], status: 'Draft' },
-      { name: 'Template 4', description: 'This is the second template.', language: TemplateLanguage.LuaLaTex, favourite: false, lastModified: new Date('2023-07-04T18:00:00'), status: 'Draft' },
     ];
     setupFetchTemplates(mockTemplates);
 
@@ -36,8 +50,19 @@ describe('Templates', () => {
 
     await waitForElementToBeRemoved(() => screen.queryByTestId(TEST_IDS.TEMPLATE_LOADING));
     const templates = screen.getAllByTestId(TEST_IDS.TEMPLATE_LOADED);
-    expect(templates).toHaveLength(4);
-  });
+    expect(templates).toHaveLength(2);
+
+    templates.forEach((template, index) => {
+      expect(template).toHaveTextContent(mockTemplates[index].name);
+      expect(template).toHaveTextContent(mockTemplates[index].description);
+      expect(template).toHaveTextContent(TemplateLanguage[mockTemplates[index].language]); // TODO make this assert more stable
+      // expect(template).toHaveTextContent(expectedValues[index].LastModified); // TODO add assert for last modified as soon as the text is implemented
+      mockTemplates[index].tags?.forEach((tag) => {
+        expect(template).toHaveTextContent(tag);
+      });
+      expect(template).toHaveTextContent(mockTemplates[index].status);
+    });
+  }, 100000);
 });
 
 const mockGateway = {
