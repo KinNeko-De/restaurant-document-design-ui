@@ -1,4 +1,4 @@
-import { formatTimeDifference } from './lastModified';
+import { formattimeSinceLastModified } from './lastModified';
 // import type { LocalesArgument } from 'intl';
 
 
@@ -58,6 +58,6 @@ ${new Date(2020, 0, 1, 0, 0, 0, 0)} | ${new Date(2022, 0, 1, 0, 0, 0, 0)} | ${'2
 
   test(`${testcase}`, () => {
     jest.setSystemTime(now);
-    expect(formatTimeDifference(modified)).toBe(expectedMessage);
+    expect(formattimeSinceLastModified(modified)).toBe(expectedMessage);
   });
 });

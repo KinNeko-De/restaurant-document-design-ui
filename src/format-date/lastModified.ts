@@ -24,59 +24,73 @@ const twoDays = 172800000;
  * - "last year" if the difference is greater or equal to 1 year but less than 2 years
  * - "X years ago" if the difference is greater or equal to 2 years
  */
-export const formatTimeDifference = (lastModifiedAt: Date): string => {
+export const formattimeSinceLastModified = (lastModifiedAt: Date): string => {
   const now = new Date();
-  const nowTime = now.getTime();
-  const modifiedTime = lastModifiedAt.getTime();
-  const diffInMs = nowTime - modifiedTime;
-
-  if (diffInMs < oneSecond) { return 'less than a second ago'; }
-  if (diffInMs < twoSeconds) { return '1 second ago'; }
-  if (diffInMs < oneMinute) { return `${Math.floor(diffInMs / oneSecond)} seconds ago`; }
-  if (diffInMs < twoMinutes) { return '1 minute ago'; }
-  if (diffInMs < oneHour) { return `${Math.floor(diffInMs / oneMinute)} minutes ago`; }
-  if (diffInMs < twoHours) { return '1 hour ago'; }
-  if (diffInMs < oneDay) { return `${Math.floor(diffInMs / oneHour)} hours ago`; }
-  if (diffInMs < twoDays) { return 'yesterday'; }
-
-  const nowYear = now.getFullYear();
-  const nowMonth = now.getMonth();
-  const nowDate = now.getDate();
   const lastModifiedYear = lastModifiedAt.getFullYear();
   const lastModifiedMonth = lastModifiedAt.getMonth();
-  const lastModifiedDate = lastModifiedAt.getDate();
-
+  const nowYear = now.getFullYear();
+  const nowMonth = now.getMonth();
   const diffInYears = nowYear - lastModifiedYear;
   const diffInMonths = diffInYears * 12 + (nowMonth - lastModifiedMonth);
+  const diffInMs = calculateDiffInMs(now, lastModifiedAt);
+  const nowDate = now.getDate();
   const daysInNowMonth = new Date(nowYear, nowMonth + 1, 0).getDate();
+  const wasModifiedLessThanAMonthAgo = ((daysInNowMonth - lastModifiedAt.getDate() + nowDate) < daysInNowMonth);
 
-  if (diffInMonths < 1) { return `${Math.floor(diffInMs / oneDay)} days ago`; }
-  if (diffInMonths === 1) {
-    if ((daysInNowMonth - lastModifiedDate + nowDate) < daysInNowMonth) { 
-      return `${Math.floor(diffInMs / oneDay)} days ago`;
-    }
-    return 'last month';
+  if(recentlyModified(diffInMs, diffInMonths, wasModifiedLessThanAMonthAgo, daysInNowMonth)) {
+    return formatSmallTimeDifference(diffInMs);
   }
-  if (diffInMonths === 2) {
-    if ((daysInNowMonth - lastModifiedDate + nowDate) < daysInNowMonth) { 
-      return 'last month';
-    }
-    return `${diffInMonths} months ago`;
-  }
+
+  if (diffInMonths === 1 || (diffInMonths === 2 && wasModifiedLessThanAMonthAgo)) { return 'last month' }
   if (diffInMonths < 12) { return `${diffInMonths} months ago`; }
   if (diffInYears < 2) { return 'last year'; }
   return `${diffInYears} years ago`;
 };
 
 export const formatLastModified = (lastModifiedAt: Date): string => {
-    /*
-    if (diffInHours < 24) {
-      return `Updated ${Math.floor(diffInHours)} hours ago`;
-    } else if (diffInYears >= 1) {
-      return `Updated on ${date.toLocaleString('en-US', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`;
-    } else {
-      return `Updated on ${date.toLocaleString('en-US', { month: 'long' })} ${date.getDate()}`;
-    }
-      */
+  const now = new Date();
+  const lastModifiedYear = lastModifiedAt.getFullYear();
+  const lastModifiedMonth = lastModifiedAt.getMonth();
+  const nowYear = now.getFullYear();
+  const nowMonth = now.getMonth();
+  const diffInYears = nowYear - lastModifiedYear;
+  const diffInMonths = diffInYears * 12 + (nowMonth - lastModifiedMonth);
+  const diffInMs = calculateDiffInMs(now, lastModifiedAt);
+  const nowDate = now.getDate();
+  const daysInNowMonth = new Date(nowYear, nowMonth + 1, 0).getDate();
+  const wasModifiedLessThanAMonthAgo = ((daysInNowMonth - lastModifiedAt.getDate() + nowDate) < daysInNowMonth);
+  
+  if(recentlyModified(diffInMs, diffInMonths, wasModifiedLessThanAMonthAgo, daysInNowMonth)) {
+    return formatSmallTimeDifference(diffInMs);
+  }
+  
   return "Will be modified the timediference only for more than 1 day and more than 1 year. showing the day respectively the day and year then";
+}
+
+function calculateDiffInMs(now: Date, lastModifiedAt: Date) {
+  const nowTime = now.getTime();
+  const modifiedTime = lastModifiedAt.getTime();
+  const diffInMs = nowTime - modifiedTime;
+  return diffInMs;
+}
+
+function recentlyModified(diffInMs: number, diffInMonths: number, wasModifiedLessThanAMonthAgo: boolean, daysInNowMonth: number): boolean {
+  const lastMonth = oneDay * daysInNowMonth;
+  return diffInMs < lastMonth || (diffInMonths === 1 && wasModifiedLessThanAMonthAgo);
+}
+
+function formatSmallTimeDifference(diffInMs: number): string {
+  if (diffInMs < oneSecond) { return 'less than a second ago'; }
+  if (diffInMs < twoSeconds) { return '1 second ago'; }
+  if (diffInMs < oneMinute) { return `${diffInUnit(oneSecond)} seconds ago`; }
+  if (diffInMs < twoMinutes) { return '1 minute ago'; }
+  if (diffInMs < oneHour) { return `${diffInUnit(oneMinute)} minutes ago`; }
+  if (diffInMs < twoHours) { return '1 hour ago'; }
+  if (diffInMs < oneDay) { return `${diffInUnit(oneHour)} hours ago`; }
+  if (diffInMs < twoDays) { return 'yesterday'; }
+  return `${diffInUnit(oneDay)} days ago`;
+
+  function diffInUnit(unit: number): number {
+    return Math.floor(diffInMs / unit);
+  }
 }
