@@ -14,6 +14,7 @@ describe('formatTimeDifference', () => {
     jest.useRealTimers();
   });
 
+  
   test.each`
   modified | now | expectedMessage | testcase
   ${new Date(2022, 0, 1, 0, 0, 0, 800)} | ${new Date(2022, 0, 1, 0, 0, 0, 900)} | ${'less than a second ago'} | ${'milliseconds: Modified less than a second ago, upper boundary'}
