@@ -145,7 +145,7 @@ const Templates: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
                       </Typography>
                     </Box>
                     <Typography variant="body2" color="text.secondary">
-                      {formatLastModified(template.lastModified)}
+                      {formatLastModified(template.lastModified, "en-US")}
                     </Typography>
                   </Box>
                   <FavoriteButton />

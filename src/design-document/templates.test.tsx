@@ -41,9 +41,14 @@ describe('Templates', () => {
 
   test('templates are displayed after loaded', async () => {
     const mockTemplates: Template[] = [
-      { name: 'Template 1', description: 'This is the first template.', language: TemplateLanguage.LuaLaTex, favourite: false, lastModified: new Date('2024-08-03T19:00:00'), tags: ['tag 1', 'tag 2'], status: 'Active' },
-      { name: 'Template 2', description: 'This is the second template.', language: TemplateLanguage.Word, favourite: false, lastModified: new Date('2023-10-02T14:30:00'), status: 'Draft' },
+      { name: 'Template 1', description: 'This is the first template.', language: TemplateLanguage.LuaLaTex, favourite: false, lastModified: new Date('2022-08-03T19:00:00'), tags: ['tag 1', 'tag 2'], status: 'Active' },
+      { name: 'Template 2', description: 'This is the second template.', language: TemplateLanguage.Word, favourite: false, lastModified: new Date('2022-10-02T14:30:00'), status: 'Draft' },
     ];
+    const expectedLocalizations = [
+      { LastModified: 'Aug 03, 2022' },
+      { LastModified: 'Oct 02, 2022' }
+    ];
+
     setupFetchTemplates(mockTemplates);
 
     render(<Sut />);
@@ -56,7 +61,7 @@ describe('Templates', () => {
       expect(template).toHaveTextContent(mockTemplates[index].name);
       expect(template).toHaveTextContent(mockTemplates[index].description);
       expect(template).toHaveTextContent(TemplateLanguage[mockTemplates[index].language]); // TODO make this assert more stable
-      // expect(template).toHaveTextContent(expectedValues[index].LastModified); // TODO add assert for last modified as soon as the text is implemented
+      expect(template).toHaveTextContent(expectedLocalizations[index].LastModified);
       mockTemplates[index].tags?.forEach((tag) => {
         expect(template).toHaveTextContent(tag);
       });
