@@ -27,7 +27,7 @@ const twoDays = 172800000;
 export const formattimeSinceLastModified = (lastModifiedAt: Date): string => {
   const { diffInMs, diffInMonths, diffInYears, wasModifiedLessThanAMonthAgo, daysInNowMonth } = calculateTimeDifference(lastModifiedAt);
 
-  if(recentlyModified(diffInMs, diffInMonths, wasModifiedLessThanAMonthAgo, daysInNowMonth)) {
+  if (recentlyModified(diffInMs, diffInMonths, wasModifiedLessThanAMonthAgo, daysInNowMonth)) {
     return formatSmallTimeDifference(diffInMs);
   }
 
@@ -39,15 +39,23 @@ export const formattimeSinceLastModified = (lastModifiedAt: Date): string => {
 
 export const formatLastModified = (lastModifiedAt: Date): string => {
   const { diffInMs, diffInMonths, diffInYears, wasModifiedLessThanAMonthAgo, daysInNowMonth } = calculateTimeDifference(lastModifiedAt);
-  
-  if(recentlyModified(diffInMs, diffInMonths, wasModifiedLessThanAMonthAgo, daysInNowMonth)) {
+
+  if (recentlyModified(diffInMs, diffInMonths, wasModifiedLessThanAMonthAgo, daysInNowMonth)) {
     return formatSmallTimeDifference(diffInMs);
   }
 
-  if (diffInYears < 1) {
-    return `${lastModifiedAt.getDay}.${lastModifiedAt.getMonth}`;
+  let options: Intl.DateTimeFormatOptions;
+
+  switch (true) {
+    case diffInYears < 1:
+      options = { day: "2-digit", month: "short" };
+      break;
+    default:
+      options = { day: "2-digit", month: "short", year: "numeric" };
+      break;
   }
-  return `${lastModifiedAt.getDay}.${lastModifiedAt.getMonth},${lastModifiedAt.getFullYear}`;
+
+  return new Intl.DateTimeFormat(undefined, options).format(lastModifiedAt);
 }
 
 const calculateTimeDifference = (lastModifiedAt: Date) => {
@@ -59,7 +67,7 @@ const calculateTimeDifference = (lastModifiedAt: Date) => {
   const nowMonth = now.getMonth();
   const diffInYears = nowYear - lastModifiedYear;
   const diffInMonths = diffInYears * 12 + (nowMonth - lastModifiedMonth);
-  
+
   const nowDate = now.getDate();
   const daysInNowMonth = new Date(nowYear, nowMonth + 1, 0).getDate();
   const wasModifiedLessThanAMonthAgo = ((daysInNowMonth - lastModifiedAt.getDate() + nowDate) < daysInNowMonth);

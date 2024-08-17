@@ -11,7 +11,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 import styled from '@emotion/styled';
 import { Template, TemplateLanguage, TemplateGateway } from './domain';
-import { formattimeSinceLastModified } from '../format-date/lastModified';
+import { formatLastModified } from '../format-date/lastModified';
 import { TEST_IDS } from './testIds';
 import HappySnowman from './happy_snowman.svg'; // Import the SVG file
 
@@ -145,7 +145,7 @@ const Templates: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
                       </Typography>
                     </Box>
                     <Typography variant="body2" color="text.secondary">
-                      {formattimeSinceLastModified(template.lastModified)}
+                      {formatLastModified(template.lastModified)}
                     </Typography>
                   </Box>
                   <FavoriteButton />
