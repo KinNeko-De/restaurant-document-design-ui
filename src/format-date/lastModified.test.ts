@@ -1,4 +1,4 @@
-import { formatLastModified, formattimeSinceLastModified } from './lastModified';
+import { formatLastModified, formatTimeSinceLastModified } from './lastModified';
 // import type { LocalesArgument } from 'intl';
 
 describe('formatTimeDifference', () => {
@@ -54,9 +54,9 @@ describe('formatTimeDifference', () => {
   ${new Date(2021, 0, 1, 0, 0, 0, 0)} | ${new Date(2022, 0, 1, 0, 0, 0, 0)} | ${'last year'} | ${'years: Modified exactly one year ago, lower boundary'}
   ${new Date(2021, 0, 1, 0, 0, 0, 0)} | ${new Date(2022, 11, 31, 23, 59, 59, 999)} | ${'last year'} | ${'years: Modified more than a year but less than two years ago, upper boundary'}
   ${new Date(2020, 0, 1, 0, 0, 0, 0)} | ${new Date(2022, 0, 1, 0, 0, 0, 0)} | ${'2 years ago'} | ${'years: Modified exactly 2 years ago, lower boundary'}
-  `('formattimeSinceLastModified $testcase', ({ modified, now, expectedMessage }) => {
+  `('formatTimeSinceLastModified $testcase', ({ modified, now, expectedMessage }) => {
       jest.setSystemTime(now);
-      expect(formattimeSinceLastModified(modified)).toBe(expectedMessage);
+      expect(formatTimeSinceLastModified(modified)).toBe(expectedMessage);
   });
 
   test.each`

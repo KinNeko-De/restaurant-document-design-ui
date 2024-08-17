@@ -24,7 +24,7 @@ const twoDays = 172800000;
  * - "last year" if the difference is greater or equal to 1 year but less than 2 years
  * - "X years ago" if the difference is greater or equal to 2 years
  */
-export const formattimeSinceLastModified = (lastModifiedAt: Date): string => {
+export const formatTimeSinceLastModified = (lastModifiedAt: Date): string => {
   const { diffInMs, diffInMonths, diffInYears, wasModifiedLessThanAMonthAgo, daysInNowMonth } = calculateTimeDifference(lastModifiedAt);
 
   if (recentlyModified(diffInMs, diffInMonths, wasModifiedLessThanAMonthAgo, daysInNowMonth)) {
