@@ -37,7 +37,7 @@ export const formattimeSinceLastModified = (lastModifiedAt: Date): string => {
   return `${diffInYears} years ago`;
 };
 
-export const formatLastModified = (lastModifiedAt: Date): string => {
+export const formatLastModified = (lastModifiedAt: Date, locales: Intl.LocalesArgument = undefined): string => {
   const { diffInMs, diffInMonths, diffInYears, wasModifiedLessThanAMonthAgo, daysInNowMonth } = calculateTimeDifference(lastModifiedAt);
 
   if (recentlyModified(diffInMs, diffInMonths, wasModifiedLessThanAMonthAgo, daysInNowMonth)) {
@@ -45,7 +45,6 @@ export const formatLastModified = (lastModifiedAt: Date): string => {
   }
 
   let options: Intl.DateTimeFormatOptions;
-
   switch (true) {
     case diffInYears < 1:
       options = { day: "2-digit", month: "short" };
@@ -55,7 +54,7 @@ export const formatLastModified = (lastModifiedAt: Date): string => {
       break;
   }
 
-  return new Intl.DateTimeFormat(undefined, options).format(lastModifiedAt);
+  return new Intl.DateTimeFormat(locales, options).format(lastModifiedAt);
 }
 
 const calculateTimeDifference = (lastModifiedAt: Date) => {
