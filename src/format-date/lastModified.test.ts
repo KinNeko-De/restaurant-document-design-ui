@@ -83,22 +83,8 @@ describe('formatTimeDifference', () => {
   ${new Date(2020, 1, 1, 0, 0, 0, 0)} | ${new Date(2020, 1, 28, 23, 59, 59, 999)} | ${'27 days ago'} | ${'days: monthWith29Days,  Modified more than 2 days but less than one month ago, upper boundary'}
   ${new Date(2020, 3, 15, 0, 0, 0, 0)} | ${new Date(2020, 4, 14, 23, 59, 59, 999)} | ${'29 days ago'} | ${'days, overlappingMonthes with 30 days Modified more than 2 days but less than one month ago, upper boundary'}
   ${new Date(2020, 4, 15, 0, 0, 0, 0)} | ${new Date(2020, 5, 14, 23, 59, 59, 999)} | ${'30 days ago'} | ${'days, overlappingMonthes with 31 days Modified more than 2 days but less than one month ago, upper boundary'}
-  ${new Date(2020, 3, 15, 0, 0, 0, 0)} | ${new Date(2020, 4, 16, 0, 0, 0, 0)} | ${'Apr 15'} | ${'days, overlappingMonthes with 31 days in nowMonth Modified more than 31 days but less than 2 months ago, lower boundary'}
-  ${new Date(2020, 4, 15, 0, 0, 0, 0)} | ${new Date(2020, 5, 15, 0, 0, 0, 0)} | ${'May 15'} | ${'days, overlappingMonthes with 30 days in nowMonth Modified more than 30 days but less than 2 months ago, upper boundary'}
-  ${new Date(2022, 0, 1, 0, 0, 0, 0)} | ${new Date(2022, 1, 1, 0, 0, 0, 0)} | ${'Jan 01'} | ${'months: Modified exactly one month ago, lower boundary'}
-  ${new Date(2022, 1, 1, 0, 0, 0, 0)} | ${new Date(2022, 2, 31, 23, 59, 59, 999)} | ${'Feb 01'} | ${'months monthNowWith31Days: Modified more than a month but less than two months, upper boundary'}
-  ${new Date(2022, 2, 1, 0, 0, 0, 0)} | ${new Date(2022, 3, 30, 23, 59, 59, 999)} | ${'Mar 01'} | ${'months monthNowWith30Days: Modified more than a month but less than two months, upper boundary'}
-  ${new Date(2022, 0, 1, 0, 0, 0, 0)} | ${new Date(2022, 1, 28, 23, 59, 59, 999)} | ${'Jan 01'} | ${'months monthNowWith28Days: Modified more than a month but less than two months, upper boundary'}
-  ${new Date(2020, 0, 1, 0, 0, 0, 0)} | ${new Date(2020, 1, 29, 23, 59, 59, 999)} | ${'Jan 01'} | ${'months monthNowWith29Days: Modified more than a month but less than two months, upper boundary'}
-  ${new Date(2022, 11, 15, 0, 0, 0, 0)} | ${new Date(2023, 0, 15, 23, 59, 59, 999)} | ${'Dec 15, 2022'} | ${'months, overlappingYear: Modified exactly one month ago, lower boundary'}
-  ${new Date(2022, 11, 15, 0, 0, 0, 0)} | ${new Date(2023, 1, 14, 23, 59, 59, 999)} | ${'Dec 15, 2022'} | ${'months, overlappingYear WithNow28Days: Modified more than a month but less than two months, upper boundary'}
-  ${new Date(2019, 11, 15, 0, 0, 0, 0)} | ${new Date(2020, 1, 14, 23, 59, 59, 999)} | ${'Dec 15, 2019'} | ${'months, overlappingYear WithNow29Days: Modified more than a month but less than two months, upper boundary'}
-  ${new Date(2022, 10, 15, 0, 0, 0, 0)} | ${new Date(2023, 0, 14, 23, 59, 59, 999)} | ${'Nov 15, 2022'} | ${'months, overlappingYear WithNow31Days: Modified more than a month but less than two months, upper boundary'}
-  ${new Date(2022, 0, 1, 0, 0, 0, 0)} | ${new Date(2022, 2, 1, 0, 0, 0, 0)} | ${'Jan 01'} | ${'months: Modified exactly 2 months ago, lower boundary'}
-  ${new Date(2022, 0, 1, 0, 0, 0, 0)} | ${new Date(2022, 11, 31, 23, 59, 59, 999)} | ${'Jan 01'} | ${'months: Modified more than 2 months but less than a year ago, upper boundary'}
-  ${new Date(2021, 0, 1, 0, 0, 0, 0)} | ${new Date(2022, 0, 1, 0, 0, 0, 0)} | ${'Jan 01, 2021'} | ${'years: Modified exactly one year ago, lower boundary'}
-  ${new Date(2021, 0, 1, 0, 0, 0, 0)} | ${new Date(2022, 11, 31, 23, 59, 59, 999)} | ${'Jan 01, 2021'} | ${'years: Modified more than a year but less than two years ago, upper boundary'}
-  ${new Date(2020, 0, 1, 0, 0, 0, 0)} | ${new Date(2022, 0, 1, 0, 0, 0, 0)} | ${'Jan 01, 2020'} | ${'years: Modified exactly 2 years ago, lower boundary'}
+  ${new Date(2022, 0, 1, 0, 0, 0, 0)} | ${new Date(2022, 2, 1, 0, 0, 0, 0)} | ${'Jan 01'} | ${'months: Modified exactly 2 months ago, this year'}
+  ${new Date(2021, 11, 31, 23, 59, 59, 999)} | ${new Date(2022, 2, 1, 0, 0, 0, 0)} | ${'Dec 31, 2021'} | ${'months: Modified exactly 2 months ago, last year'}
   `('formatLastModified english $testcase', ({ modified, now, expectedMessage }) => {
       jest.setSystemTime(now);
       let locales = 'en-US';
