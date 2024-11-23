@@ -51,7 +51,7 @@ const getLanguageColor = (value: TemplateLanguage): string => {
   }
 };
 
-const Templates: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
+const TemplateList: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
   const [loading, setLoading] = useState(true);
   const [templates, setTemplates] = useState<Template[]>([]);
 
@@ -163,4 +163,4 @@ const Templates: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
   );
 };
 
-export default Templates;
+export default TemplateList;

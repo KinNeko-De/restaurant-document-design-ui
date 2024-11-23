@@ -1,21 +1,20 @@
 import { createBrowserRouter } from "react-router-dom";
-import Templates from "./design-document/templates";
-import Template from "./design-document/template";
+import TemplateList from "./design-document/templates"; // Updated import
+import TemplateDesign from "./design-document/template";
 import PageNotFound from "./pageNotFound";
 import { templateGateway } from "./design-document/gateway";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Templates gateway={templateGateway} />,
+    element: <TemplateList gateway={templateGateway} />, // Updated usage
     ErrorBoundary: PageNotFound,
-    children: [
-      {
-        path: "/template/:id",
-        element: <Template gateway={templateGateway} />,
-      }
-    ]
   },
+  {
+    path: "/template/:id",
+    element: <TemplateDesign gateway={templateGateway} />,
+    ErrorBoundary: PageNotFound,
+  }
 ]);
 
 export default router;
