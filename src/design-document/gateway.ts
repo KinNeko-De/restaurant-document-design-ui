@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const templateGateway: TemplateGateway = {
   fetchTemplates: async (): Promise<TemplatePreview[]> => {
-    await new Promise(resolve => setTimeout(resolve, 250));
+    await new Promise(resolve => setTimeout(resolve, 2300));
     return [
       { id: uuidv4(), name: 'Invoice', description: 'This is the first template.', language: TemplateLanguage.LuaLaTex, favourite: true, lastModified: new Date('2024-08-03T19:00:00'), tags: ['tag 1', 'tag 2'], status: 'Active' },
       { id: uuidv4(), name: 'Template 2', description: 'This is the second template.', language: TemplateLanguage.Word, favourite: false, lastModified: new Date('2023-10-02T14:30:00'), status: 'Draft' },
@@ -12,7 +12,7 @@ export const templateGateway: TemplateGateway = {
     ];
   },
   fetchTemplate: async (id: string): Promise<Template> => {
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 2300));
     return {
       id,
       name: 'Invoice',
