@@ -96,65 +96,65 @@ const Templates: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
     <Grid container rowSpacing={'1rem'} columnSpacing={{ xs: '1rem' }} sx={{ m: '0.5rem' }}>
       {templates.map((template) => (
         <Grid xs={12} sm={6} md={4} key={template.name}>
-          <Card sx={{ height: '100%' }} data-testid={TEST_IDS.TEMPLATE_LOADED}>
-          <CardActionArea component={RouterLink} to={`/template/${template.id}`}>
-            <Box display="flex" flexDirection="column" height="100%">
-              <CardContent>
-                <Box display="flex" alignItems="center">
-                  <Typography variant="h5" component="div">
-                    {template.name}
-                  </Typography>
-                  <StatusCircle status={template.status}>{template.status}</StatusCircle>
-                </Box>
-                <Typography variant="body2" color="text.secondary">
-                  {template.description}
-                </Typography>
-                {template.tags && template.tags.length > 0 && (
-                  <Box display="flex" flexWrap="wrap" gap={1} mt={1}>
-                    {template.tags.map((tag, index) => (
-                      <Box
-                        key={index}
-                        sx={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          padding: '0.25rem 0.5rem',
-                          borderRadius: '16px',
-                          backgroundColor: '#e0e0e0',
-                          color: '#424242',
-                          fontSize: '0.875rem',
-                        }}
-                      >
-                        {tag}
-                      </Box>
-                    ))}
+          <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }} data-testid={TEST_IDS.TEMPLATE_LOADED}>
+            <CardActionArea component={RouterLink} to={`/template/${template.id}`} sx={{ flexGrow: 1 }}>
+              <Box display="flex" flexDirection="column" height="100%">
+                <CardContent>
+                  <Box display="flex" alignItems="center">
+                    <Typography variant="h5" component="div">
+                      {template.name}
+                    </Typography>
+                    <StatusCircle status={template.status}>{template.status}</StatusCircle>
                   </Box>
-                )}
-              </CardContent>
-              <Box mt="auto">
-                <CardActions style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Box display="flex" alignItems="center" gap={2}>
-                    <Box display="flex" alignItems="center" gap={0.5}>
-                      <Box
-                        sx={{
-                          width: 10,
-                          height: 10,
-                          borderRadius: '50%',
-                          backgroundColor: getLanguageColor(template.language),
-                        }}
-                      />
+                  <Typography variant="body2" color="text.secondary">
+                    {template.description}
+                  </Typography>
+                  {template.tags && template.tags.length > 0 && (
+                    <Box display="flex" flexWrap="wrap" gap={1} mt={1}>
+                      {template.tags.map((tag, index) => (
+                        <Box
+                          key={index}
+                          sx={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: '0.25rem 0.5rem',
+                            borderRadius: '16px',
+                            backgroundColor: '#e0e0e0',
+                            color: '#424242',
+                            fontSize: '0.875rem',
+                          }}
+                        >
+                          {tag}
+                        </Box>
+                      ))}
+                    </Box>
+                  )}
+                </CardContent>
+                <Box mt="auto">
+                  <CardActions style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Box display="flex" alignItems="center" gap={2}>
+                      <Box display="flex" alignItems="center" gap={0.5}>
+                        <Box
+                          sx={{
+                            width: 10,
+                            height: 10,
+                            borderRadius: '50%',
+                            backgroundColor: getLanguageColor(template.language),
+                          }}
+                        />
+                        <Typography variant="body2" color="text.secondary">
+                          {TemplateLanguage[template.language]}
+                        </Typography>
+                      </Box>
                       <Typography variant="body2" color="text.secondary">
-                        {TemplateLanguage[template.language]}
+                        {formatLastModified(template.lastModified, "en-US")}
                       </Typography>
                     </Box>
-                    <Typography variant="body2" color="text.secondary">
-                      {formatLastModified(template.lastModified, "en-US")}
-                    </Typography>
-                  </Box>
-                  <FavoriteButton />
-                </CardActions>
+                    <FavoriteButton />
+                  </CardActions>
+                </Box>
               </Box>
-            </Box>
             </CardActionArea>
           </Card>
         </Grid>
