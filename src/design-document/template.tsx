@@ -1,14 +1,14 @@
 import Typography from '@mui/material/Typography';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { TemplateGateway, TemplateDetail } from './domain';
+import { TemplateGateway, Template } from './domain';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 
 const TemplateDesign: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
   const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
-  const [template, setTemplate] = useState<TemplateDetail | null>(null);
+  const [template, setTemplate] = useState<Template | null>(null);
 
   useEffect(() => {
     const loadTemplate = async () => {
@@ -50,16 +50,13 @@ const TemplateDesign: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => 
         Language: {template.language}
       </Typography>
       <Typography variant="body2" color="textSecondary">
-        Author: {template.author}
-      </Typography>
-      <Typography variant="body2" color="textSecondary">
         Last Modified: {template.lastModified.toLocaleDateString()}
       </Typography>
       <Typography variant="body2" color="textSecondary">
         Status: {template.status}
       </Typography>
       <Typography variant="body2" color="textSecondary">
-        Content: {template.content}
+        Files: {template.files?.map((file) => file.name).join(', ')}
       </Typography>
       {template.tags && template.tags.length > 0 && (
         <Box mt={2}>

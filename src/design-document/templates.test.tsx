@@ -1,10 +1,10 @@
 import React from 'react';
 import { fireEvent, render, screen, waitForElementToBeRemoved } from '@testing-library/react';
-import { Template, TemplateLanguage } from './domain';
+import { Template, TemplateLanguage, TemplatePreview } from './domain';
 import Templates from './templates';
 import { TEST_IDS } from './testIds';
 
-describe('Templates', () => {
+describe('TemplateList', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -40,7 +40,7 @@ describe('Templates', () => {
   });
 
   test('templates are displayed after loaded', async () => {
-    const mockTemplates: Template[] = [
+    const mockTemplates: TemplatePreview[] = [
       { id: '550e8400-e29b-41d4-a716-446655440000', name: 'Template 1', description: 'This is the first template.', language: TemplateLanguage.LuaLaTex, favourite: false, lastModified: new Date('2022-08-03T19:00:00'), tags: ['tag 1', 'tag 2'], status: 'Active' },
       { id: '550e8400-e29b-41d4-a716-446655440001', name: 'Template 2', description: 'This is the second template.', language: TemplateLanguage.Word, favourite: false, lastModified: new Date('2022-10-02T14:30:00'), status: 'Draft' },
     ];

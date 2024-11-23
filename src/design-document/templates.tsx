@@ -10,7 +10,7 @@ import StarIcon from '@mui/icons-material/Star';
 import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 import styled from '@emotion/styled';
-import { Template, TemplateLanguage, TemplateGateway } from './domain';
+import { Template, TemplateLanguage, TemplateGateway, TemplatePreview } from './domain';
 import { formatLastModified } from '../format-date/lastModified';
 import { TEST_IDS } from './testIds';
 import HappySnowman from './happy_snowman.svg'; // Import the SVG file
@@ -52,7 +52,7 @@ const getLanguageColor = (value: TemplateLanguage): string => {
 
 const TemplateList: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
   const [loading, setLoading] = useState(true);
-  const [templates, setTemplates] = useState<Template[]>([]);
+  const [templates, setTemplates] = useState<TemplatePreview[]>([]);
 
   useEffect(() => {
     const loadTemplates = async () => {
