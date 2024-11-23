@@ -17,7 +17,6 @@ import HappySnowman from './happy_snowman.svg'; // Import the SVG file
 import CardActionArea from '@mui/material/CardActionArea';
 import { Link as RouterLink } from 'react-router-dom';
 
-
 const StatusCircle = styled.span<{ status: 'Draft' | 'Active' }>`
   display: inline-flex;
   align-items: center;
@@ -97,8 +96,9 @@ const TemplateList: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
       {templates.map((template) => (
         <Grid xs={12} sm={6} md={4} key={template.name}>
           <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }} data-testid={TEST_IDS.TEMPLATE_LOADED}>
-            <CardActionArea component={RouterLink} to={`/template/${template.id}`} sx={{ flexGrow: 1 }}>
+            
               <Box display="flex" flexDirection="column" height="100%">
+              <CardActionArea component={RouterLink} to={`/template/${template.id}`} sx={{ flexGrow: 1 }}>
                 <CardContent>
                   <Box display="flex" alignItems="center">
                     <Typography variant="h5" component="div">
@@ -131,6 +131,7 @@ const TemplateList: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
                     </Box>
                   )}
                 </CardContent>
+                </CardActionArea>
                 <Box mt="auto">
                   <CardActions style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Box display="flex" alignItems="center" gap={2}>
@@ -151,11 +152,12 @@ const TemplateList: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
                         {formatLastModified(template.lastModified, "en-US")}
                       </Typography>
                     </Box>
-                    <FavoriteButton />
+                    <IconButton>
+                      <StarIcon color={template.favourite ? "primary" : "disabled"} />
+                    </IconButton>
                   </CardActions>
                 </Box>
               </Box>
-            </CardActionArea>
           </Card>
         </Grid>
       ))}

@@ -9,6 +9,11 @@ export interface Template {
   status: 'Draft' | 'Active';
 }
 
+export interface TemplateDetail extends Template {
+  content: string; // Example additional property
+  author: string;  // Example additional property
+}
+
 export enum TemplateLanguage {
   LuaLaTex = 0,
   Word = 1
@@ -16,5 +21,5 @@ export enum TemplateLanguage {
 
 export interface TemplateGateway {
   fetchTemplates: () => Promise<Template[]>;
-  fetchTemplate: () => Promise<Template>;
+  fetchTemplate: (id: string) => Promise<TemplateDetail>;
 }
