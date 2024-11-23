@@ -14,6 +14,8 @@ import { Template, TemplateLanguage, TemplateGateway } from './domain';
 import { formatLastModified } from '../format-date/lastModified';
 import { TEST_IDS } from './testIds';
 import HappySnowman from './happy_snowman.svg'; // Import the SVG file
+import CardActionArea from '@mui/material/CardActionArea';
+import { Link as RouterLink } from 'react-router-dom';
 
 
 const StatusCircle = styled.span<{ status: 'Draft' | 'Active' }>`
@@ -95,6 +97,7 @@ const Templates: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
       {templates.map((template) => (
         <Grid xs={12} sm={6} md={4} key={template.name}>
           <Card sx={{ height: '100%' }} data-testid={TEST_IDS.TEMPLATE_LOADED}>
+          <CardActionArea component={RouterLink} to={`/template/${template.name}`}>
             <Box display="flex" flexDirection="column" height="100%">
               <CardContent>
                 <Box display="flex" alignItems="center">
@@ -152,6 +155,7 @@ const Templates: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
                 </CardActions>
               </Box>
             </Box>
+            </CardActionArea>
           </Card>
         </Grid>
       ))}
