@@ -97,7 +97,7 @@ const Templates: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
       {templates.map((template) => (
         <Grid xs={12} sm={6} md={4} key={template.name}>
           <Card sx={{ height: '100%' }} data-testid={TEST_IDS.TEMPLATE_LOADED}>
-          <CardActionArea component={RouterLink} to={`/template/${template.name}`}>
+          <CardActionArea component={RouterLink} to={`/template/${template.id}`}>
             <Box display="flex" flexDirection="column" height="100%">
               <CardContent>
                 <Box display="flex" alignItems="center">

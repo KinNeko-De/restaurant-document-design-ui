@@ -1,10 +1,11 @@
 export interface Template {
+  id: string;
   name: string;
   description: string;
   language: TemplateLanguage;
   favourite: boolean;
   lastModified: Date;
-  tags?: string[]
+  tags?: string[];
   status: 'Draft' | 'Active';
 }
 
