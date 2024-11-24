@@ -30,8 +30,8 @@ const StatusCircle = styled.span<{ status: 'Draft' | 'Active' }>`
   font-weight: bold;
 `;
 
-const Pin: React.FC<{ isPinned: boolean }> = ({ isPinned }) => (
-  <IconButton>
+const Pin: React.FC<{ isPinned: boolean; onClick: () => void }> = ({ isPinned, onClick }) => (
+  <IconButton onClick={onClick}>
     <PushPinIcon color={isPinned ? "primary" : "disabled"} />
   </IconButton>
 );
@@ -61,6 +61,15 @@ const TemplateList: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
 
     loadTemplates();
   }, [gateway]);
+
+  const togglePin = (id: string) => {
+    setTemplates((prevTemplates) => {
+      const newTemplates = prevTemplates.map((template) =>
+        template.id === id ? { ...template, pinned: !template.pinned } : template
+      );
+      return newTemplates;
+    });
+  };
 
   if (loading) {
     return (
@@ -148,7 +157,7 @@ const TemplateList: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
             </CardActionArea>
             {/* disableSpacing is needed because material ui put a margin of 8px in front of the not first element */}
             <CardActions disableSpacing style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-              <Pin isPinned={template.pinned} />
+              <Pin isPinned={template.pinned} onClick={() => togglePin(template.id)} />
             </CardActions>
           </Card>
         </Grid>
