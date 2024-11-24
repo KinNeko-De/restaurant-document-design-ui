@@ -140,24 +140,26 @@ const TemplateList: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
                 )}
               </CardContent>
             </CardActionArea>
-            <CardActions>
-              <Box display="flex" gap={0.5} alignItems={'center'}>
-                <Box
-                  sx={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: '50%',
-                    backgroundColor: getLanguageColor(template.language),
-                  }}
-                />
+            <CardActions disableSpacing sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Box display={'flex'} gap={1} alignItems={'center'}>
+                <Box display={'flex'} gap={0.5} alignItems={'center'}>
+                  <Box
+                    sx={{
+                      width: 10,
+                      height: 10,
+                      borderRadius: '50%',
+                      backgroundColor: getLanguageColor(template.language),
+                    }}
+                  />
+                  <Typography variant="body2" color="text.secondary">
+                    {TemplateLanguage[template.language]}
+                  </Typography>
+                </Box>
+                <DotIcon sx={{ fontSize: '0.3rem', color: 'text.secondary' }} />
                 <Typography variant="body2" color="text.secondary">
-                  {TemplateLanguage[template.language]}
+                  {formatLastModified(template.lastModified, "en-US")}
                 </Typography>
               </Box>
-              <DotIcon sx={{ fontSize: '0.3rem', color: 'text.secondary' }} />
-              <Typography variant="body2" color="text.secondary">
-                {formatLastModified(template.lastModified, "en-US")}
-              </Typography>
               <Pin isPinned={template.pinned} onClick={() => togglePin(template.id)} />
             </CardActions>
 
