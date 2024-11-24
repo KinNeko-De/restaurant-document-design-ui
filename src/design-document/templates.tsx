@@ -105,8 +105,8 @@ const TemplateList: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
     <Grid container rowSpacing={'1rem'} columnSpacing={{ xs: '1rem' }} sx={{ m: '0.5rem' }}>
       {templates.map((template) => (
         <Grid xs={12} sm={6} md={4} key={template.name}>
-          <Card sx={{ height: '100%' }} data-testid={TEST_IDS.TEMPLATE_LOADED}>
-            <CardActionArea component={RouterLink} to={`/template/${template.id}`}>
+          <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }} data-testid={TEST_IDS.TEMPLATE_LOADED}>
+            <CardActionArea component={RouterLink} to={`/template/${template.id}`} sx={{ flexGrow: 1 }}>
               <CardHeader title={<Box display="flex">
                 <Typography variant="h5" component="div">
                   {template.name}
@@ -139,27 +139,28 @@ const TemplateList: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
                   </Box>
                 )}
               </CardContent>
-              <CardActions disableSpacing>
-                <Box display="flex" gap={0.5} alignItems={'center'}>
-                  <Box
-                    sx={{
-                      width: 10,
-                      height: 10,
-                      borderRadius: '50%',
-                      backgroundColor: getLanguageColor(template.language),
-                    }}
-                  />
-                  <Typography variant="body2" color="text.secondary">
-                    {TemplateLanguage[template.language]}
-                  </Typography>
-                </Box>
-                <DotIcon></DotIcon>
-                <Typography variant="body2" color="text.secondary">
-                  {formatLastModified(template.lastModified, "en-US")}
-                </Typography>
-                <Pin isPinned={template.pinned} onClick={() => togglePin(template.id)} />
-              </CardActions>
             </CardActionArea>
+            <CardActions sx={{ mt: "auto" }}>
+              <Box display="flex" gap={0.5} alignItems={'center'}>
+                <Box
+                  sx={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: '50%',
+                    backgroundColor: getLanguageColor(template.language),
+                  }}
+                />
+                <Typography variant="body2" color="text.secondary">
+                  {TemplateLanguage[template.language]}
+                </Typography>
+              </Box>
+              <DotIcon sx={{ fontSize: '0.3rem', color: 'text.secondary' }} />
+              <Typography variant="body2" color="text.secondary">
+                {formatLastModified(template.lastModified, "en-US")}
+              </Typography>
+              <Pin isPinned={template.pinned} onClick={() => togglePin(template.id)} />
+            </CardActions>
+
           </Card>
         </Grid>
       ))
