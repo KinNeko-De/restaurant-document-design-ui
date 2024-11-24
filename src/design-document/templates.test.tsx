@@ -1,10 +1,25 @@
 import React from 'react';
 import { fireEvent, render, screen, waitForElementToBeRemoved } from '@testing-library/react';
-import { Template, TemplateLanguage } from './domain';
+import { Template, TemplateLanguage, TemplatePreview } from './domain';
 import Templates from './templates';
 import { TEST_IDS } from './testIds';
+import { MemoryRouter } from 'react-router-dom';
 
-describe('Templates', () => {
+function createTemplatePreview(overrides: Partial<TemplatePreview> = {}): TemplatePreview {
+  return {
+    id: '550e8400-e29b-41d4-a716-446655440000',
+    name: 'Template 1',
+    description: 'This is the first template.',
+    language: TemplateLanguage.LuaLaTex,
+    pinned: false,
+    lastModified: new Date('2022-08-03T19:00:00'),
+    tags: ['tag 1', 'tag 2'],
+    status: 'Active',
+    ...overrides,
+  };
+}
+
+describe('TemplateList', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -40,9 +55,9 @@ describe('Templates', () => {
   });
 
   test('templates are displayed after loaded', async () => {
-    const mockTemplates: Template[] = [
-      { name: 'Template 1', description: 'This is the first template.', language: TemplateLanguage.LuaLaTex, favourite: false, lastModified: new Date('2022-08-03T19:00:00'), tags: ['tag 1', 'tag 2'], status: 'Active' },
-      { name: 'Template 2', description: 'This is the second template.', language: TemplateLanguage.Word, favourite: false, lastModified: new Date('2022-10-02T14:30:00'), status: 'Draft' },
+    const mockTemplates: TemplatePreview[] = [
+      createTemplatePreview({ name: 'Template 1', description: 'This is the first template.', language: TemplateLanguage.LuaLaTex, pinned: false, lastModified: new Date('2022-08-03T19:00:00'), tags: ['tag 1', 'tag 2'], status: 'Active' }),
+      createTemplatePreview({ name: 'Template 2', description: 'This is the second template.', language: TemplateLanguage.Word, lastModified: new Date('2022-10-02T14:30:00'), status: 'Draft' }),
     ];
     const expectedLocalizations = [
       { LastModified: 'Aug 03, 2022' },
@@ -51,7 +66,7 @@ describe('Templates', () => {
 
     setupFetchTemplates(mockTemplates);
 
-    render(<Sut />);
+    render(<MemoryRouter><Sut /></MemoryRouter>);
 
     await waitForElementToBeRemoved(() => screen.queryByTestId(TEST_IDS.TEMPLATE_LOADING));
     const templates = screen.getAllByTestId(TEST_IDS.TEMPLATE_LOADED);
@@ -68,6 +83,47 @@ describe('Templates', () => {
       expect(template).toHaveTextContent(mockTemplates[index].status);
     });
   }, 100000);
+
+  test.each`
+  template | expectedColor | testcase
+  ${createTemplatePreview({ pinned: false })} | ${'MuiSvgIcon-colorDisabled'} | ${'template is not pinned'}
+  ${createTemplatePreview({ pinned: true })} | ${'MuiSvgIcon-colorPrimary'} | ${'template is pinned'}
+  `('pinicon color: $testcase', async ({ template, expectedColor }) => {
+    const mockTemplates: TemplatePreview[] = [template];
+    setupFetchTemplates(mockTemplates);
+
+    render(<MemoryRouter><Sut /></MemoryRouter>);
+
+    await waitForElementToBeRemoved(() => screen.queryByTestId(TEST_IDS.TEMPLATE_LOADING));
+
+    const pinIcons = screen.getAllByTestId(TEST_IDS.TEMPLATE_PINICON);
+    expect(pinIcons[0]).toHaveClass(expectedColor);
+  });
+
+  test('pin toggles on click', async () => {
+    const mockTemplates: TemplatePreview[] = [
+      createTemplatePreview({ pinned: false }),
+    ];
+
+    setupFetchTemplates(mockTemplates);
+
+    render(<MemoryRouter><Sut /></MemoryRouter>);
+
+    await waitForElementToBeRemoved(() => screen.queryByTestId(TEST_IDS.TEMPLATE_LOADING));
+
+    // Check initial pin button state
+    const pinButtons = screen.getAllByTestId(TEST_IDS.TEMPLATE_PINBUTTON);
+    expect(pinButtons).toHaveLength(1);
+    const pinButton = pinButtons[0];
+
+    // For now only the icon color is toggled and not the actual pin state
+    fireEvent.click(pinButton);
+    const pinIcons = screen.getAllByTestId(TEST_IDS.TEMPLATE_PINICON);
+    expect(pinIcons[0]).toHaveClass('MuiSvgIcon-colorPrimary');
+
+    fireEvent.click(pinButton);
+    expect(pinIcons[0]).toHaveClass('MuiSvgIcon-colorDisabled');
+  });
 });
 
 const mockGateway = {

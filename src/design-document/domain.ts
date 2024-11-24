@@ -1,11 +1,23 @@
-export interface Template {
+export interface TemplatePreview {
+  id: string;
   name: string;
   description: string;
   language: TemplateLanguage;
-  favourite: boolean;
   lastModified: Date;
-  tags?: string[]
+  tags?: string[];
   status: 'Draft' | 'Active';
+  pinned: boolean;
+}
+
+export interface Template {
+  id: string;
+  name: string;
+  description: string;
+  language: TemplateLanguage;
+  lastModified: Date;
+  tags?: string[];
+  status: 'Draft' | 'Active';
+  files?: TemplateFile[];
 }
 
 export enum TemplateLanguage {
@@ -13,7 +25,12 @@ export enum TemplateLanguage {
   Word = 1
 }
 
+export interface TemplateFile {
+  name: string;
+  mediaType: string;
+}
+
 export interface TemplateGateway {
-  fetchTemplates: () => Promise<Template[]>;
-  fetchTemplate: () => Promise<Template>;
+  fetchTemplates: () => Promise<TemplatePreview[]>;
+  fetchTemplate: (id: string) => Promise<Template>;
 }

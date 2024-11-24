@@ -6,15 +6,18 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import StarIcon from '@mui/icons-material/Star';
 import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 import styled from '@emotion/styled';
-import { Template, TemplateLanguage, TemplateGateway } from './domain';
+import { TemplateLanguage, TemplateGateway, TemplatePreview } from './domain';
 import { formatLastModified } from '../format-date/lastModified';
 import { TEST_IDS } from './testIds';
 import HappySnowman from './happy_snowman.svg'; // Import the SVG file
-
+import CardActionArea from '@mui/material/CardActionArea';
+import { Link as RouterLink } from 'react-router-dom';
+import PushPinIcon from '@mui/icons-material/PushPin';
+import DotIcon from '@mui/icons-material/FiberManualRecord';
+import { CardHeader } from '@mui/material';
 
 const StatusCircle = styled.span<{ status: 'Draft' | 'Active' }>`
   display: inline-flex;
@@ -23,16 +26,17 @@ const StatusCircle = styled.span<{ status: 'Draft' | 'Active' }>`
   padding: 0.2rem 0.5rem;
   border-radius: 12px;
   margin-left: 8px;
+  margin-top: 3px;
+  margin-bottom: 3px;
   background-color: ${({ status }) => (status === 'Active' ? '#28a745' : '#6c757d')};
   color: ${({ status }) => (status === 'Active' ? '#ffffff' : '#ffffff')};
   font-size: 0.75rem;
   font-weight: bold;
 `;
 
-// FavoriteButton component (implementation details omitted)
-const FavoriteButton: React.FC = () => (
-  <IconButton>
-    <StarIcon color="primary" />
+const Pin: React.FC<{ isPinned: boolean; onClick: () => void }> = ({ isPinned, onClick }) => (
+  <IconButton onClick={onClick} data-testid={TEST_IDS.TEMPLATE_PINBUTTON}>
+    <PushPinIcon color={isPinned ? "primary" : "disabled"} data-testid={TEST_IDS.TEMPLATE_PINICON} />
   </IconButton>
 );
 
@@ -43,15 +47,14 @@ const getLanguageColor = (value: TemplateLanguage): string => {
     case TemplateLanguage.Word:
       return 'blue';
     default:
-      // This should never happen if all enum values are handled
       const exhaustiveCheck: never = value;
       throw new Error(`Unhandled case: ${exhaustiveCheck}`);
   }
 };
 
-const Templates: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
+const TemplateList: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
   const [loading, setLoading] = useState(true);
-  const [templates, setTemplates] = useState<Template[]>([]);
+  const [templates, setTemplates] = useState<TemplatePreview[]>([]);
 
   useEffect(() => {
     const loadTemplates = async () => {
@@ -63,6 +66,15 @@ const Templates: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
     loadTemplates();
   }, [gateway]);
 
+  const togglePin = (id: string) => {
+    setTemplates((prevTemplates) => {
+      const newTemplates = prevTemplates.map((template) =>
+        template.id === id ? { ...template, pinned: !template.pinned } : template
+      );
+      return newTemplates;
+    });
+  };
+
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="100vh" data-testid={TEST_IDS.TEMPLATE_LOADING}>
@@ -73,7 +85,7 @@ const Templates: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
 
   if (templates.length === 0) {
     return (
-      <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" height="100vh" p={2}  data-testid={TEST_IDS.TEMPLATE_LOADED_NO_TEMPLATES}>
+      <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" height="100vh" p={2} data-testid={TEST_IDS.TEMPLATE_LOADED_NO_TEMPLATES}>
         <Box display="flex" justifyContent="center" alignItems="center" mb={2}>
           <img src={HappySnowman} alt="Happy Snowman" style={{ maxWidth: '100%', height: 'auto' }} />
         </Box>
@@ -94,15 +106,15 @@ const Templates: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
     <Grid container rowSpacing={'1rem'} columnSpacing={{ xs: '1rem' }} sx={{ m: '0.5rem' }}>
       {templates.map((template) => (
         <Grid xs={12} sm={6} md={4} key={template.name}>
-          <Card sx={{ height: '100%' }} data-testid={TEST_IDS.TEMPLATE_LOADED}>
-            <Box display="flex" flexDirection="column" height="100%">
+          <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }} data-testid={TEST_IDS.TEMPLATE_LOADED}>
+            <CardActionArea component={RouterLink} to={`/template/${template.id}`} sx={{ flexGrow: 1 }}>
+              <CardHeader title={<Box display="flex">
+                <Typography variant="h5" component="div">
+                  {template.name}
+                </Typography>
+                <StatusCircle status={template.status}>{template.status}</StatusCircle>
+              </Box>} />
               <CardContent>
-                <Box display="flex" alignItems="center">
-                  <Typography variant="h5" component="div">
-                    {template.name}
-                  </Typography>
-                  <StatusCircle status={template.status}>{template.status}</StatusCircle>
-                </Box>
                 <Typography variant="body2" color="text.secondary">
                   {template.description}
                 </Typography>
@@ -128,35 +140,35 @@ const Templates: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
                   </Box>
                 )}
               </CardContent>
-              <Box mt="auto">
-                <CardActions style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Box display="flex" alignItems="center" gap={2}>
-                    <Box display="flex" alignItems="center" gap={0.5}>
-                      <Box
-                        sx={{
-                          width: 10,
-                          height: 10,
-                          borderRadius: '50%',
-                          backgroundColor: getLanguageColor(template.language),
-                        }}
-                      />
-                      <Typography variant="body2" color="text.secondary">
-                        {TemplateLanguage[template.language]}
-                      </Typography>
-                    </Box>
-                    <Typography variant="body2" color="text.secondary">
-                      {formatLastModified(template.lastModified, "en-US")}
-                    </Typography>
-                  </Box>
-                  <FavoriteButton />
-                </CardActions>
+            </CardActionArea>
+            <CardActions disableSpacing sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Box display={'flex'} gap={1} alignItems={'center'}>
+                <Box display={'flex'} gap={0.5} alignItems={'center'}>
+                  <Box
+                    sx={{
+                      width: 10,
+                      height: 10,
+                      borderRadius: '50%',
+                      backgroundColor: getLanguageColor(template.language),
+                    }}
+                  />
+                  <Typography variant="body2" color="text.secondary">
+                    {TemplateLanguage[template.language]}
+                  </Typography>
+                </Box>
+                <DotIcon sx={{ fontSize: '0.3rem', color: 'text.secondary' }} />
+                <Typography variant="body2" color="text.secondary">
+                  {formatLastModified(template.lastModified, "en-US")}
+                </Typography>
               </Box>
-            </Box>
+              <Pin isPinned={template.pinned} onClick={() => togglePin(template.id)} />
+            </CardActions>
           </Card>
         </Grid>
-      ))}
-    </Grid>
+      ))
+      }
+    </Grid >
   );
 };
 
-export default Templates;
+export default TemplateList;
