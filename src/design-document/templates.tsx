@@ -26,7 +26,8 @@ const StatusCircle = styled.span<{ status: 'Draft' | 'Active' }>`
   padding: 0.2rem 0.5rem;
   border-radius: 12px;
   margin-left: 8px;
-  margin-top: 6px;
+  margin-top: 3px;
+  margin-bottom: 3px;
   background-color: ${({ status }) => (status === 'Active' ? '#28a745' : '#6c757d')};
   color: ${({ status }) => (status === 'Active' ? '#ffffff' : '#ffffff')};
   font-size: 0.75rem;
