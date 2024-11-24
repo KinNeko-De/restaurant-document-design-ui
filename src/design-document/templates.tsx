@@ -140,7 +140,7 @@ const TemplateList: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
                 )}
               </CardContent>
             </CardActionArea>
-            <CardActions sx={{ mt: "auto" }}>
+            <CardActions>
               <Box display="flex" gap={0.5} alignItems={'center'}>
                 <Box
                   sx={{
