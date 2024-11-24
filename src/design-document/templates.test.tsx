@@ -3,6 +3,7 @@ import { fireEvent, render, screen, waitForElementToBeRemoved } from '@testing-l
 import { Template, TemplateLanguage, TemplatePreview } from './domain';
 import Templates from './templates';
 import { TEST_IDS } from './testIds';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('TemplateList', () => {
   beforeEach(() => {
@@ -51,7 +52,7 @@ describe('TemplateList', () => {
 
     setupFetchTemplates(mockTemplates);
 
-    render(<Sut />);
+    render(<MemoryRouter><Sut /></MemoryRouter>);
 
     await waitForElementToBeRemoved(() => screen.queryByTestId(TEST_IDS.TEMPLATE_LOADING));
     const templates = screen.getAllByTestId(TEST_IDS.TEMPLATE_LOADED);
