@@ -5,12 +5,24 @@ import Templates from './templates';
 import { TEST_IDS } from './testIds';
 import { MemoryRouter } from 'react-router-dom';
 
+function createTemplatePreview(overrides: Partial<TemplatePreview> = {}): TemplatePreview {
+  return {
+    id: '550e8400-e29b-41d4-a716-446655440000',
+    name: 'Template 1',
+    description: 'This is the first template.',
+    language: TemplateLanguage.LuaLaTex,
+    pinned: false,
+    lastModified: new Date('2022-08-03T19:00:00'),
+    tags: ['tag 1', 'tag 2'],
+    status: 'Active',
+    ...overrides,
+  };
+}
+
 describe('TemplateList', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-
-
 
   test('loading animation is shown while loading', async () => {
     (mockGateway.fetchTemplates as jest.Mock).mockImplementationOnce(() => {
@@ -44,8 +56,8 @@ describe('TemplateList', () => {
 
   test('templates are displayed after loaded', async () => {
     const mockTemplates: TemplatePreview[] = [
-      { id: '550e8400-e29b-41d4-a716-446655440000', name: 'Template 1', description: 'This is the first template.', language: TemplateLanguage.LuaLaTex, pinned: false, lastModified: new Date('2022-08-03T19:00:00'), tags: ['tag 1', 'tag 2'], status: 'Active' },
-      { id: '550e8400-e29b-41d4-a716-446655440001', name: 'Template 2', description: 'This is the second template.', language: TemplateLanguage.Word, pinned: false, lastModified: new Date('2022-10-02T14:30:00'), status: 'Draft' },
+      createTemplatePreview({ name: 'Template 1', description: 'This is the first template.', language: TemplateLanguage.LuaLaTex, pinned: false, lastModified: new Date('2022-08-03T19:00:00'), tags: ['tag 1', 'tag 2'], status: 'Active' }),
+      createTemplatePreview({ name: 'Template 2', description: 'This is the second template.', language: TemplateLanguage.Word, lastModified: new Date('2022-10-02T14:30:00'), status: 'Draft' }),
     ];
     const expectedLocalizations = [
       { LastModified: 'Aug 03, 2022' },
@@ -74,8 +86,8 @@ describe('TemplateList', () => {
 
   test.each`
   template | expectedColor | testcase
-  ${{ pinned: false, language: TemplateLanguage.LuaLaTex, lastModified: new Date('2022-08-03T19:00:00') }} | ${'MuiSvgIcon-colorDisabled'} | ${'template is not pinned'}
-  ${{ pinned: true, language: TemplateLanguage.LuaLaTex, lastModified: new Date('2022-08-03T19:00:00') }} | ${'MuiSvgIcon-colorPrimary'} | ${'template is pinned'}
+  ${createTemplatePreview({ pinned: false })} | ${'MuiSvgIcon-colorDisabled'} | ${'template is not pinned'}
+  ${createTemplatePreview({ pinned: true })} | ${'MuiSvgIcon-colorPrimary'} | ${'template is pinned'}
   `('pinicon color: $testcase', async ({ template, expectedColor }) => {
     const mockTemplates: TemplatePreview[] = [template];
     setupFetchTemplates(mockTemplates);
@@ -90,7 +102,7 @@ describe('TemplateList', () => {
 
   test('pin toggles on click', async () => {
     const mockTemplates: TemplatePreview[] = [
-      { id: '550e8400-e29b-41d4-a716-446655440000', name: 'Template 1', description: 'This is the first template.', language: TemplateLanguage.LuaLaTex, pinned: false, lastModified: new Date('2022-08-03T19:00:00'), tags: ['tag 1', 'tag 2'], status: 'Active' },
+      createTemplatePreview({ pinned: false }),
     ];
 
     setupFetchTemplates(mockTemplates);

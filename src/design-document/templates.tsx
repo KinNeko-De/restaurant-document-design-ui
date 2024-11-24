@@ -162,7 +162,6 @@ const TemplateList: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
               </Box>
               <Pin isPinned={template.pinned} onClick={() => togglePin(template.id)} />
             </CardActions>
-
           </Card>
         </Grid>
       ))
