@@ -15,7 +15,9 @@ import { TEST_IDS } from './testIds';
 import HappySnowman from './happy_snowman.svg'; // Import the SVG file
 import CardActionArea from '@mui/material/CardActionArea';
 import { Link as RouterLink } from 'react-router-dom';
-import PushPinIcon from '@mui/icons-material/PushPin'; // Import the pin icon
+import PushPinIcon from '@mui/icons-material/PushPin';
+import DotIcon from '@mui/icons-material/FiberManualRecord';
+import { CardHeader } from '@mui/material';
 
 const StatusCircle = styled.span<{ status: 'Draft' | 'Active' }>`
   display: inline-flex;
@@ -103,65 +105,61 @@ const TemplateList: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
     <Grid container rowSpacing={'1rem'} columnSpacing={{ xs: '1rem' }} sx={{ m: '0.5rem' }}>
       {templates.map((template) => (
         <Grid xs={12} sm={6} md={4} key={template.name}>
-          <Card sx={{ height: '100%', display: 'flex' }} data-testid={TEST_IDS.TEMPLATE_LOADED}>
+          <Card sx={{ height: '100%' }} data-testid={TEST_IDS.TEMPLATE_LOADED}>
             <CardActionArea component={RouterLink} to={`/template/${template.id}`}>
-              <CardContent sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <Box display={'flex'} flexDirection={'column'} >
-                  <Box display="flex">
-                    <Typography variant="h5" component="div">
-                      {template.name}
-                    </Typography>
-                    <StatusCircle status={template.status}>{template.status}</StatusCircle>
+              <CardHeader title={<Box display="flex">
+                <Typography variant="h5" component="div">
+                  {template.name}
+                </Typography>
+                <StatusCircle status={template.status}>{template.status}</StatusCircle>
+              </Box>} />
+              <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                  {template.description}
+                </Typography>
+                {template.tags && template.tags.length > 0 && (
+                  <Box display="flex" flexWrap="wrap" gap={1} mt={1}>
+                    {template.tags.map((tag, index) => (
+                      <Box
+                        key={index}
+                        sx={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          padding: '0.25rem 0.5rem',
+                          borderRadius: '16px',
+                          backgroundColor: '#e0e0e0',
+                          color: '#424242',
+                          fontSize: '0.875rem',
+                        }}
+                      >
+                        {tag}
+                      </Box>
+                    ))}
                   </Box>
-                  <Typography variant="body2" color="text.secondary">
-                    {template.description}
-                  </Typography>
-                  {template.tags && template.tags.length > 0 && (
-                    <Box display="flex" flexWrap="wrap" gap={1} mt={1}>
-                      {template.tags.map((tag, index) => (
-                        <Box
-                          key={index}
-                          sx={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            padding: '0.25rem 0.5rem',
-                            borderRadius: '16px',
-                            backgroundColor: '#e0e0e0',
-                            color: '#424242',
-                            fontSize: '0.875rem',
-                          }}
-                        >
-                          {tag}
-                        </Box>
-                      ))}
-                    </Box>
-                  )}
-                </Box>
-                <Box display="flex" gap={2} alignItems={'center'} mt={1}>
-                  <Box display="flex" gap={0.5} alignItems={'center'}>
-                    <Box
-                      sx={{
-                        width: 10,
-                        height: 10,
-                        borderRadius: '50%',
-                        backgroundColor: getLanguageColor(template.language),
-                      }}
-                    />
-                    <Typography variant="body2" color="text.secondary">
-                      {TemplateLanguage[template.language]}
-                    </Typography>
-                  </Box>
-                  <Typography variant="body2" color="text.secondary">
-                    {formatLastModified(template.lastModified, "en-US")}
-                  </Typography>
-                </Box>
+                )}
               </CardContent>
+              <CardActions disableSpacing>
+                <Box display="flex" gap={0.5} alignItems={'center'}>
+                  <Box
+                    sx={{
+                      width: 10,
+                      height: 10,
+                      borderRadius: '50%',
+                      backgroundColor: getLanguageColor(template.language),
+                    }}
+                  />
+                  <Typography variant="body2" color="text.secondary">
+                    {TemplateLanguage[template.language]}
+                  </Typography>
+                </Box>
+                <DotIcon></DotIcon>
+                <Typography variant="body2" color="text.secondary">
+                  {formatLastModified(template.lastModified, "en-US")}
+                </Typography>
+                <Pin isPinned={template.pinned} onClick={() => togglePin(template.id)} />
+              </CardActions>
             </CardActionArea>
-            {/* disableSpacing is needed because material ui put a margin of 8px in front of the not first element */}
-            <CardActions disableSpacing style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-              <Pin isPinned={template.pinned} onClick={() => togglePin(template.id)} />
-            </CardActions>
           </Card>
         </Grid>
       ))
