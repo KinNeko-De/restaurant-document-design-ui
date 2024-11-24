@@ -6,7 +6,7 @@ export interface TemplatePreview {
   lastModified: Date;
   tags?: string[];
   status: 'Draft' | 'Active';
-  favourite: boolean;
+  pinned: boolean;
 }
 
 export interface Template {
