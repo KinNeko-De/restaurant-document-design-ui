@@ -10,6 +10,8 @@ describe('TemplateList', () => {
     jest.clearAllMocks();
   });
 
+
+
   test('loading animation is shown while loading', async () => {
     (mockGateway.fetchTemplates as jest.Mock).mockImplementationOnce(() => {
       return new Promise((resolve) => {
@@ -69,6 +71,47 @@ describe('TemplateList', () => {
       expect(template).toHaveTextContent(mockTemplates[index].status);
     });
   }, 100000);
+
+  test.each`
+  template | expectedColor | testcase
+  ${{ pinned: false, language: TemplateLanguage.LuaLaTex, lastModified: new Date('2022-08-03T19:00:00') }} | ${'MuiSvgIcon-colorDisabled'} | ${'template is not pinned'}
+  ${{ pinned: true, language: TemplateLanguage.LuaLaTex, lastModified: new Date('2022-08-03T19:00:00') }} | ${'MuiSvgIcon-colorPrimary'} | ${'template is pinned'}
+  `('pinicon color: $testcase', async ({ template, expectedColor }) => {
+    const mockTemplates: TemplatePreview[] = [template];
+    setupFetchTemplates(mockTemplates);
+
+    render(<MemoryRouter><Sut /></MemoryRouter>);
+
+    await waitForElementToBeRemoved(() => screen.queryByTestId(TEST_IDS.TEMPLATE_LOADING));
+
+    const pinIcons = screen.getAllByTestId(TEST_IDS.TEMPLATE_PINICON);
+    expect(pinIcons[0]).toHaveClass(expectedColor);
+  });
+
+  test('pin toggles on click', async () => {
+    const mockTemplates: TemplatePreview[] = [
+      { id: '550e8400-e29b-41d4-a716-446655440000', name: 'Template 1', description: 'This is the first template.', language: TemplateLanguage.LuaLaTex, pinned: false, lastModified: new Date('2022-08-03T19:00:00'), tags: ['tag 1', 'tag 2'], status: 'Active' },
+    ];
+
+    setupFetchTemplates(mockTemplates);
+
+    render(<MemoryRouter><Sut /></MemoryRouter>);
+
+    await waitForElementToBeRemoved(() => screen.queryByTestId(TEST_IDS.TEMPLATE_LOADING));
+
+    // Check initial pin button state
+    const pinButtons = screen.getAllByTestId(TEST_IDS.TEMPLATE_PINBUTTON);
+    expect(pinButtons).toHaveLength(1);
+    const pinButton = pinButtons[0];
+
+    // For now only the icon color is toggled and not the actual pin state
+    fireEvent.click(pinButton);
+    const pinIcons = screen.getAllByTestId(TEST_IDS.TEMPLATE_PINICON);
+    expect(pinIcons[0]).toHaveClass('MuiSvgIcon-colorPrimary');
+
+    fireEvent.click(pinButton);
+    expect(pinIcons[0]).toHaveClass('MuiSvgIcon-colorDisabled');
+  });
 });
 
 const mockGateway = {

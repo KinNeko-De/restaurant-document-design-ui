@@ -34,8 +34,8 @@ const StatusCircle = styled.span<{ status: 'Draft' | 'Active' }>`
 `;
 
 const Pin: React.FC<{ isPinned: boolean; onClick: () => void }> = ({ isPinned, onClick }) => (
-  <IconButton onClick={onClick}>
-    <PushPinIcon color={isPinned ? "primary" : "disabled"} />
+  <IconButton onClick={onClick} data-testid={TEST_IDS.TEMPLATE_PINBUTTON}>
+    <PushPinIcon color={isPinned ? "primary" : "disabled"} data-testid={TEST_IDS.TEMPLATE_PINICON} />
   </IconButton>
 );
 
