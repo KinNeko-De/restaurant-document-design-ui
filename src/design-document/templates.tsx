@@ -24,6 +24,7 @@ const StatusCircle = styled.span<{ status: 'Draft' | 'Active' }>`
   padding: 0.2rem 0.5rem;
   border-radius: 12px;
   margin-left: 8px;
+  margin-top: 6px;
   background-color: ${({ status }) => (status === 'Active' ? '#28a745' : '#6c757d')};
   color: ${({ status }) => (status === 'Active' ? '#ffffff' : '#ffffff')};
   font-size: 0.75rem;
@@ -102,39 +103,41 @@ const TemplateList: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
     <Grid container rowSpacing={'1rem'} columnSpacing={{ xs: '1rem' }} sx={{ m: '0.5rem' }}>
       {templates.map((template) => (
         <Grid xs={12} sm={6} md={4} key={template.name}>
-          <Card sx={{ height: '100%', display: 'flex', flexDirection: 'row' }} data-testid={TEST_IDS.TEMPLATE_LOADED}>
+          <Card sx={{ height: '100%', display: 'flex' }} data-testid={TEST_IDS.TEMPLATE_LOADED}>
             <CardActionArea component={RouterLink} to={`/template/${template.id}`}>
-              <CardContent>
-                <Box display="flex" alignItems="center">
-                  <Typography variant="h5" component="div">
-                    {template.name}
-                  </Typography>
-                  <StatusCircle status={template.status}>{template.status}</StatusCircle>
-                </Box>
-                <Typography variant="body2" color="text.secondary">
-                  {template.description}
-                </Typography>
-                {template.tags && template.tags.length > 0 && (
-                  <Box display="flex" flexWrap="wrap" gap={1} mt={1}>
-                    {template.tags.map((tag, index) => (
-                      <Box
-                        key={index}
-                        sx={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          padding: '0.25rem 0.5rem',
-                          borderRadius: '16px',
-                          backgroundColor: '#e0e0e0',
-                          color: '#424242',
-                          fontSize: '0.875rem',
-                        }}
-                      >
-                        {tag}
-                      </Box>
-                    ))}
+              <CardContent sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <Box display={'flex'} flexDirection={'column'} >
+                  <Box display="flex">
+                    <Typography variant="h5" component="div">
+                      {template.name}
+                    </Typography>
+                    <StatusCircle status={template.status}>{template.status}</StatusCircle>
                   </Box>
-                )}
+                  <Typography variant="body2" color="text.secondary">
+                    {template.description}
+                  </Typography>
+                  {template.tags && template.tags.length > 0 && (
+                    <Box display="flex" flexWrap="wrap" gap={1} mt={1}>
+                      {template.tags.map((tag, index) => (
+                        <Box
+                          key={index}
+                          sx={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: '0.25rem 0.5rem',
+                            borderRadius: '16px',
+                            backgroundColor: '#e0e0e0',
+                            color: '#424242',
+                            fontSize: '0.875rem',
+                          }}
+                        >
+                          {tag}
+                        </Box>
+                      ))}
+                    </Box>
+                  )}
+                </Box>
                 <Box display="flex" gap={2} alignItems={'center'} mt={1}>
                   <Box display="flex" gap={0.5} alignItems={'center'}>
                     <Box
@@ -161,8 +164,9 @@ const TemplateList: React.FC<{ gateway: TemplateGateway }> = ({ gateway }) => {
             </CardActions>
           </Card>
         </Grid>
-      ))}
-    </Grid>
+      ))
+      }
+    </Grid >
   );
 };
 
